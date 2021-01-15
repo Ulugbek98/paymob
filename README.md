@@ -57,7 +57,8 @@ This is a little customized version of Wordpress. This is intented for professio
         CustomLog ${APACHE_LOG_DIR}/access.log combined
     </VirtualHost>
 ```
-Here `DocumentRoot` may be different at your machine,
+Here `DocumentRoot` may be different at your machine.
+
 3. `sudo a2ensite {project name}`
 4. `sudo service apache2 restart`
 5. Add following to `/etc/hosts` file
