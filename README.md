@@ -59,8 +59,14 @@ This is a little customized version of Wordpress. This is intented for professio
 ```
 Here `DocumentRoot` may be different at your machine.
 
-3. `sudo a2ensite {project name}`
-4. `sudo service apache2 restart`
+3. Lets say apache that such conf file exists (do it only once)
+```
+    sudo a2ensite {project name}
+```
+4. Each time we change apache conf file, we need to restart it
+```
+    sudo service apache2 restart
+```
 5. Add following to `/etc/hosts` file
 ```
     127.0.1.1   {your-domain}.loc
@@ -70,19 +76,24 @@ Here `DocumentRoot` may be different at your machine.
 
 Read more about [upstream](https://www.atlassian.com/git/tutorials/git-forks-and-upstreams)
 
-Let's see remote
-`git remote -v`
-
-Let's add upstream
-`git remote add upstream https://github.com/oqila/wordpress.git`
-
-Let's download latest changes
-`git fetch upstream`
-
-Now time to merge changes
+1. Let's see remote
+```
+    git remote -v
+```
+2. Let's add upstream
+```
+    git remote add upstream https://github.com/oqila/wordpress.git
+```
+3. Let's download latest changes
+```
+    git fetch upstream
+```
+4. Now time to merge changes
 ```
 git checkout master
 git merge upstream/master
 ```
-
-If you have merge conflict use `git mergetool`
+5. If you have merge conflict use
+```
+    git mergetool
+````
