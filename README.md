@@ -1,6 +1,6 @@
 # Wordpress by OQILA
 
-This is a little customized version of Wordpress. This is intented for professional development.
+This is a little customized version of Wordpress. This is intended for professional development.
 
 ### Features:
 
