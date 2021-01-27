@@ -35,7 +35,7 @@ This is a little customized version of Wordpress. This is intented for professio
         cp wp-config-local.php.dist wp-config-local.php
 
 1. Edit database and site url parameters,
-1. if you are working locally or developing, that is, not in production mode, then it is highly recommended to create empty file with name `DEBUG` at `{project-folder}`. This enables wordpress debug mode which displays errors,
+1. If you are working locally or developing, that is, not in production mode, then it is highly recommended to create empty file with name `DEBUG` at `{project-folder}`. This enables wordpress debug mode which displays errors,
 1. Your project should have its own remote git repo, so set it
         
         git remote set-url origin https://{remote url}.git
@@ -96,4 +96,3 @@ Read more about [upstream](https://www.atlassian.com/git/tutorials/git-forks-and
 5. If you have merge conflict use
         
         git mergetool
-        
