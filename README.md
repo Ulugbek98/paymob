@@ -4,7 +4,7 @@ This is a little customized version of Wordpress. This is intented for professio
 
 ### Features:
 
-1. It comes with pre-installed Advanced Custom Field, Classic Editor, Akismet Anti-Spam, WP Fastest Cache (based on test and this (post)[https://blog.hubspot.com/website/best-wordpress-cache-plugins-to-speed-up-a-site]) plugins,
+1. It comes with pre-installed Advanced Custom Field, Classic Editor, Akismet Anti-Spam, WP Fastest Cache (based on test and this [post](https://blog.hubspot.com/website/best-wordpress-cache-plugins-to-speed-up-a-site)) plugins,
 1. Default theme is WP Bootstrap Starter, which is empty and great start point for development custom theme,
 1. Local environment related configurations are moved to seperate file and ignored by Git,
 1. No installation steps are required. Just import database and run!
