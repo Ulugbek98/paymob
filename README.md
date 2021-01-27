@@ -16,30 +16,30 @@ This is a little customized version of Wordpress. This is intented for professio
 ## Installation:
 
 1. Download and unzip [this repo](https://github.com/oqila/wordpress/archive/master.zip) into the folder where you want to install your new project. Alternatively you can clone:
-```
-   git clone https://github.com/oqila/wordpress.git
-```
-2. Change `wordpress` folder name to your new project name, e.g. `ados.uz`
-```
-    mv wordpress ados.uz
-```
-3. Create empty database for project via phpMyAdmin with `utf8mb4_general_ci` collation,
-4. Import `{project-folder}/install/db.sql` backup sql file into the newly created database,
-5. [Linux only] Set proper file permissions with prepared script
-```
-    ./{project-folder}/install/secure_site_dir {project-folder}/
-```
-6. Now to go project folder and duplicate `wp-config-local.php.dist` with name `wp-config-local.php`
-```
-    cd {project-folder}/
-    cp wp-config-local.php.dist wp-config-local.php
-```
-7. Edit database and site url parameters,
-8. Optionally create empty file with name `DEBUG` at `{project-folder}`. This enables wordpress debug mode which is helpful during development process,
-9. Your project should have its own remote git repo, so set it
-```
-    git remote set-url origin https://{remote url}.git
-```
+        
+        git clone https://github.com/oqila/wordpress.git
+
+1. Change `wordpress` folder name to your new project name, e.g. `ados.uz`
+        
+        mv wordpress ados.uz
+
+1. Create empty database for project via phpMyAdmin with `utf8mb4_general_ci` collation,
+1. Import `{project-folder}/install/db.sql` backup sql file into the newly created database,
+1. [Linux only] Set proper file permissions with prepared script
+        
+        ./{project-folder}/install/secure_site_dir {project-folder}/
+
+1. Now to go project folder and duplicate `wp-config-local.php.dist` with name `wp-config-local.php`
+        
+        cd {project-folder}/
+        cp wp-config-local.php.dist wp-config-local.php
+
+1. Edit database and site url parameters,
+1. Optionally create empty file with name `DEBUG` at `{project-folder}`. This enables wordpress debug mode which is helpful during development process,
+1. Your project should have its own remote git repo, so set it
+        
+        git remote set-url origin https://{remote url}.git
+
 
 ## Apache configuration on Linux
 
