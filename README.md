@@ -16,7 +16,7 @@ This is a little customized version of Wordpress. This is intented for professio
 1. Missing `.htaccess` and `.gitignore` files are provided,
 1. No site address changing via phpMyAdmin each time you move to other domain.
 
-**Note** All terminal examples are shown in Linux. If you are using Windows then do it in its way. `{}` means that is example and must be replaced with real value.
+**Note**: All terminal examples are shown in Linux. If you are using Windows then do it in its way. `{}` means that is example and must be replaced with real value.
 
 ## Installation:
 
