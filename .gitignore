@@ -18,3 +18,5 @@ node_modules/
 
 /DEBUG
 /wp-config-local.php
+
+wp-content/cache/*
