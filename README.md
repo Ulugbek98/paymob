@@ -5,11 +5,11 @@ This is a little customized version of Wordpress. This is intented for professio
 ### Features:
 
 1. It comes with pre-installed best plugins:
-    1. [ACF](https://wordpress.org/plugins/advanced-custom-fields/) - Extremely flexible custom fields,
-    1. [Classic Editor](https://wordpress.org/plugins/classic-editor/) - Work like editor for humankind,
-    1. Akismet Anti-Spam - Default spam detector (disabled by default, enable it in production mode),
-    1. [WP Fastest Cache](https://wordpress.org/plugins/wp-fastest-cache/) - #1 cache for wordpress (based on test and this [post](https://blog.hubspot.com/website/best-wordpress-cache-plugins-to-speed-up-a-site), disabled by default, enable it in production mode),
-    1. [Smush](https://wordpress.org/plugins/wp-smushit/) - #1 image optimizer,
+    * [ACF](https://wordpress.org/plugins/advanced-custom-fields/) - Extremely flexible custom fields,
+    * [Classic Editor](https://wordpress.org/plugins/classic-editor/) - Work like editor for humankind,
+    * Akismet Anti-Spam - Default spam detector (disabled by default, enable it in production mode),
+    * [WP Fastest Cache](https://wordpress.org/plugins/wp-fastest-cache/) - #1 cache for wordpress (based on test and this [post](https://blog.hubspot.com/website/best-wordpress-cache-plugins-to-speed-up-a-site), disabled by default, enable it in production mode),
+    * [Smush](https://wordpress.org/plugins/wp-smushit/) - #1 image optimizer,
 1. Default theme is WP Bootstrap Starter, which is empty and great start point for development custom theme,
 1. Local environment related configurations are moved to seperate file and ignored by Git,
 1. No installation steps are required. Just import database and run!
