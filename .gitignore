@@ -1,8 +1,7 @@
 # ignore everything in the root except the "wp-content" directory.
 !wp-content/
 
-# we do not need upload files in git
-wp-content/uploads/*
+# we do not need upload files in git, its gitignore is located inside that folder
 
 # ignore these plugins
 wp-content/plugins/hello.php
