@@ -35,7 +35,7 @@ This is a little customized version of Wordpress. This is intented for professio
         cp wp-config-local.php.dist wp-config-local.php
 
 1. Edit database and site url parameters,
-1. Optionally create empty file with name `DEBUG` at `{project-folder}`. This enables wordpress debug mode which is helpful during development process,
+1. if you are working locally or developing, that is, not in production mode, then it is highly recommended to create empty file with name `DEBUG` at `{project-folder}`. This enables wordpress debug mode which displays errors,
 1. Your project should have its own remote git repo, so set it
         
         git remote set-url origin https://{remote url}.git
@@ -44,56 +44,56 @@ This is a little customized version of Wordpress. This is intented for professio
 ## Apache configuration on Linux
 
 1. Create file `/etc/apache2/sites-available/{project name}.conf`,
-2. Put this on that file
-```
-    <VirtualHost *:80>
-        ServerName {your-domain}.loc
-        ServerAlias www.{your-domain}.loc
+1. Put this on that file
+        
+        <VirtualHost *:80>
+            ServerName {your-domain}.loc
+            ServerAlias www.{your-domain}.loc
 
-        ServerAdmin webmaster@localhost
-        DocumentRoot /var/www/vhosts/{project folder}
+            ServerAdmin webmaster@localhost
+            DocumentRoot /var/www/vhosts/{project folder}
 
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-    </VirtualHost>
-```
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+        </VirtualHost>
+
 Here `DocumentRoot` may be different at your machine.
 
-3. Lets say apache that such conf file exists (do it only once)
-```
-    sudo a2ensite {project name}
-```
+1. Lets say apache that such conf file exists (do it only once)
+        
+        sudo a2ensite {project name}
+
 4. Each time we change apache conf file, we need to restart it
-```
-    sudo service apache2 restart
-```
+        
+        sudo service apache2 restart
+
 5. Add following to `/etc/hosts` file
-```
-    127.0.1.1   {your-domain}.loc
-```
+        
+        127.0.1.1 {your-domain}.loc
+
 
 ## Working with upstream for getting latest changes
 
 Read more about [upstream](https://www.atlassian.com/git/tutorials/git-forks-and-upstreams)
 
 1. Let's see remote
-```
-    git remote -v
-```
+        
+        git remote -v
+
 2. Let's add upstream
-```
-    git remote add upstream https://github.com/oqila/wordpress.git
-```
+        
+        git remote add upstream https://github.com/oqila/wordpress.git
+
 3. Let's download latest changes
-```
-    git fetch upstream
-```
+        
+        git fetch upstream
+
 4. Now time to merge changes
-```
-git checkout master
-git merge upstream/master
-```
+        
+        git checkout master
+        git merge upstream/master
+
 5. If you have merge conflict use
-```
-    git mergetool
-````
+        
+        git mergetool
+        
