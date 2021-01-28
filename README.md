@@ -24,9 +24,9 @@ This is a little customized version of Wordpress. This is intended for professio
         
         git clone https://github.com/oqila/wordpress.git
 
-1. Change `wordpress` folder name to your new project name, e.g. `ados.uz`
+1. Change `wordpress` folder name to your new project name, e.g. `magnitbuilding.uz`
         
-        mv wordpress ados.uz
+        mv wordpress magnitbuilding.uz
 
 1. Create empty database for project via phpMyAdmin with `utf8mb4_general_ci` collation,
 1. Import `{project-folder}/install/db.sql` backup sql file into the newly created database,
