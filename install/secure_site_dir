@@ -32,6 +32,8 @@ read -p "Do you really want to secure path $site_path (y/n): " answer
         find $site_path -type d -exec chmod g+s '{}' \;
 
         chmod g+w -R "${site_path}/wp-content"
+        chmod g+w "${site_path}/.htaccess"
+        chmod g+w "${site_path}/wp-config.php"
     else
         exit 1;
     fi
