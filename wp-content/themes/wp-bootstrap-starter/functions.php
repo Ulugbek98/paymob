@@ -1,4 +1,10 @@
 <?php
+
+// Disable WordPress image compression
+add_filter( 'jpeg_quality', function( $arg ) {
+    return 100;
+});
+
 /**
  * WP Bootstrap Starter functions and definitions
  *

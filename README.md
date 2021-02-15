@@ -16,6 +16,7 @@ This is a little customized version of Wordpress. This is intended for professio
 1. Missing `.htaccess` and `.gitignore` files are provided,
 1. No site address changing via phpMyAdmin each time you move to other domain.
 1. `WP_DEBUG` is managered by whether DEBUG file created or not in document root folder.
+1. Built-in WP image comression is disabled by making jpeg_quality 100 in `functions.php`, because we use Smush plugin for that.
 
 **Note**: All terminal examples are shown in Linux. If you are using Windows then do it in its way. `{}` means that is example and must be replaced with real value.
 
