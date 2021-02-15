@@ -9,14 +9,13 @@ This is a little customized version of Wordpress. This is intended for professio
     * [Classic Editor](https://wordpress.org/plugins/classic-editor/) - Work like editor for humankind,
     * Akismet Anti-Spam - Default spam detector (disabled by default, enable it in production mode),
     * [WP Fastest Cache](https://wordpress.org/plugins/wp-fastest-cache/) - #1 cache for wordpress (based on test and this [post](https://blog.hubspot.com/website/best-wordpress-cache-plugins-to-speed-up-a-site), disabled by default, enable it in production mode),
-    * [Smush](https://wordpress.org/plugins/wp-smushit/) - #1 image optimizer,
 1. Default theme is WP Bootstrap Starter, which is empty and great start point for development custom theme,
 1. Local environment related configurations are moved to seperate file and ignored by Git,
 1. No installation steps are required. Just import database and run!
 1. Missing `.htaccess` and `.gitignore` files are provided,
 1. No site address changing via phpMyAdmin each time you move to other domain.
 1. `WP_DEBUG` is managered by whether DEBUG file created or not in document root folder.
-1. Built-in WP image comression is disabled by making jpeg_quality 100 in `functions.php`, because we use Smush plugin for that.
+1. Built-in WP image comression is disabled by making jpeg_quality 100 in `functions.php`. It puts all responsibilities about image quality on developer. Thus you have full control on images.
 
 **Note**: All terminal examples are shown in Linux. If you are using Windows then do it in its way. `{}` means that is example and must be replaced with real value.
 
