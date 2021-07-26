@@ -19,6 +19,14 @@ This is a little customized version of Wordpress. This is intended for professio
 
 **Note**: All terminal examples are shown in Linux. If you are using Windows then do it in its way. `{}` means that is example and must be replaced with real value.
 
+## Update:
+
+When you update, keep following files unchanged, since they contain OQILA WP modifications
+1. index.php
+1. wp-config.php
+
+
+
 ## Installation:
 
 1. Download and unzip [this repo](https://github.com/oqila/wordpress/archive/master.zip) into the folder where you want to install your new project. Alternatively you can clone:
