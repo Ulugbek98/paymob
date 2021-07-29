@@ -65,6 +65,9 @@ if ( ! defined( 'ABSPATH' ) ) {
     define( 'ABSPATH', __DIR__ . '/' );
 }
 
+// Disallow file edits
+define( 'DISALLOW_FILE_EDIT', true );
+
 require_once ABSPATH . 'wp-config-local.php';
 
 /** Sets up WordPress vars and included files. */
