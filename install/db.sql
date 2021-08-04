@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 04, 2021 at 04:29 PM
+-- Generation Time: Aug 04, 2021 at 05:08 PM
 -- Server version: 5.7.34-0ubuntu0.18.04.1
 -- PHP Version: 7.0.33-52+ubuntu18.04.1+deb.sury.org+1
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `wordpress`
+-- Database: `oqila-wp`
 --
 
 -- --------------------------------------------------------
@@ -53,7 +53,7 @@ INSERT INTO `wp_actionscheduler_actions` (`action_id`, `hook`, `status`, `schedu
 (42, 'action_scheduler/migration_hook', 'complete', '2021-08-02 09:09:45', '2021-08-02 09:09:45', '[]', 'O:30:\"ActionScheduler_SimpleSchedule\":2:{s:22:\"\0*\0scheduled_timestamp\";i:1627895385;s:41:\"\0ActionScheduler_SimpleSchedule\0timestamp\";i:1627895385;}', 1, 1, '2021-08-02 09:10:05', '2021-08-02 09:10:05', 0, NULL),
 (43, 'wp_mail_smtp_admin_notifications_update', 'complete', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '[3]', 'O:28:\"ActionScheduler_NullSchedule\":0:{}', 2, 1, '2021-08-03 09:12:46', '2021-08-03 09:12:46', 0, NULL),
 (44, 'wp_mail_smtp_admin_notifications_update', 'complete', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '[4]', 'O:28:\"ActionScheduler_NullSchedule\":0:{}', 2, 1, '2021-08-04 09:18:09', '2021-08-04 09:18:09', 0, NULL),
-(45, 'action_scheduler/migration_hook', 'pending', '2021-08-04 11:29:25', '2021-08-04 11:29:25', '[]', 'O:30:\"ActionScheduler_SimpleSchedule\":2:{s:22:\"\0*\0scheduled_timestamp\";i:1628076565;s:41:\"\0ActionScheduler_SimpleSchedule\0timestamp\";i:1628076565;}', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, NULL);
+(45, 'action_scheduler/migration_hook', 'complete', '2021-08-04 11:29:25', '2021-08-04 11:29:25', '[]', 'O:30:\"ActionScheduler_SimpleSchedule\":2:{s:22:\"\0*\0scheduled_timestamp\";i:1628076565;s:41:\"\0ActionScheduler_SimpleSchedule\0timestamp\";i:1628076565;}', 1, 1, '2021-08-04 11:29:42', '2021-08-04 11:29:42', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -122,7 +122,9 @@ INSERT INTO `wp_actionscheduler_logs` (`log_id`, `action_id`, `message`, `log_da
 (16, 44, 'action created', '2021-08-04 09:17:58', '2021-08-04 09:17:58'),
 (17, 44, 'action started via Async Request', '2021-08-04 09:18:00', '2021-08-04 09:18:00'),
 (18, 44, 'action complete via Async Request', '2021-08-04 09:18:07', '2021-08-04 09:18:07'),
-(19, 45, 'action created', '2021-08-04 11:28:26', '2021-08-04 11:28:26');
+(19, 45, 'action created', '2021-08-04 11:28:26', '2021-08-04 11:28:26'),
+(20, 45, 'action started via WP Cron', '2021-08-04 11:29:42', '2021-08-04 11:29:42'),
+(21, 45, 'action complete via WP Cron', '2021-08-04 11:29:42', '2021-08-04 11:29:42');
 
 -- --------------------------------------------------------
 
@@ -306,7 +308,7 @@ INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`
 (104, 'widget_archives', 'a:2:{i:2;a:3:{s:5:\"title\";s:0:\"\";s:5:\"count\";i:0;s:8:\"dropdown\";i:0;}s:12:\"_multiwidget\";i:1;}', 'yes'),
 (105, 'widget_meta', 'a:2:{i:2;a:1:{s:5:\"title\";s:0:\"\";}s:12:\"_multiwidget\";i:1;}', 'yes'),
 (106, 'sidebars_widgets', 'a:6:{s:19:\"wp_inactive_widgets\";a:2:{i:0;s:6:\"text-2\";i:1;s:6:\"text-3\";}s:9:\"sidebar-1\";a:6:{i:0;s:8:\"search-2\";i:1;s:14:\"recent-posts-2\";i:2;s:17:\"recent-comments-2\";i:3;s:10:\"archives-2\";i:4;s:12:\"categories-2\";i:5;s:6:\"meta-2\";}s:8:\"footer-1\";a:0:{}s:8:\"footer-2\";a:0:{}s:8:\"footer-3\";a:0:{}s:13:\"array_version\";i:3;}', 'yes'),
-(107, 'cron', 'a:13:{i:1628076570;a:1:{s:26:\"action_scheduler_run_queue\";a:1:{s:32:\"0d04ed39571b55704c122d726248bbac\";a:3:{s:8:\"schedule\";s:12:\"every_minute\";s:4:\"args\";a:1:{i:0;s:7:\"WP Cron\";}s:8:\"interval\";i:60;}}}i:1628078665;a:1:{s:34:\"wp_privacy_delete_old_export_files\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:6:\"hourly\";s:4:\"args\";a:0:{}s:8:\"interval\";i:3600;}}}i:1628079358;a:1:{s:20:\"webpc_regenerate_all\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"webpc_cron\";s:4:\"args\";a:0:{}s:8:\"interval\";i:3600;}}}i:1628098077;a:1:{s:18:\"wp_https_detection\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}}i:1628109232;a:1:{s:32:\"recovery_mode_clean_expired_keys\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1628109233;a:2:{s:16:\"wp_version_check\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}s:17:\"wp_update_plugins\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}}i:1628109234;a:1:{s:16:\"wp_update_themes\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}}i:1628109261;a:2:{s:19:\"wp_scheduled_delete\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}s:25:\"delete_expired_transients\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1628109264;a:1:{s:30:\"wp_scheduled_auto_draft_delete\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1628142025;a:1:{s:13:\"wpseo-reindex\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1628142027;a:1:{s:16:\"wpseo_ryte_fetch\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:6:\"weekly\";s:4:\"args\";a:0:{}s:8:\"interval\";i:604800;}}}i:1628282033;a:1:{s:30:\"wp_site_health_scheduled_check\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:6:\"weekly\";s:4:\"args\";a:0:{}s:8:\"interval\";i:604800;}}}s:7:\"version\";i:2;}', 'yes'),
+(107, 'cron', 'a:13:{i:1628078430;a:1:{s:26:\"action_scheduler_run_queue\";a:1:{s:32:\"0d04ed39571b55704c122d726248bbac\";a:3:{s:8:\"schedule\";s:12:\"every_minute\";s:4:\"args\";a:1:{i:0;s:7:\"WP Cron\";}s:8:\"interval\";i:60;}}}i:1628078665;a:1:{s:34:\"wp_privacy_delete_old_export_files\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:6:\"hourly\";s:4:\"args\";a:0:{}s:8:\"interval\";i:3600;}}}i:1628079358;a:1:{s:20:\"webpc_regenerate_all\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"webpc_cron\";s:4:\"args\";a:0:{}s:8:\"interval\";i:3600;}}}i:1628098077;a:1:{s:18:\"wp_https_detection\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}}i:1628109232;a:1:{s:32:\"recovery_mode_clean_expired_keys\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1628109233;a:2:{s:16:\"wp_version_check\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}s:17:\"wp_update_plugins\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}}i:1628109234;a:1:{s:16:\"wp_update_themes\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:10:\"twicedaily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:43200;}}}i:1628109261;a:2:{s:19:\"wp_scheduled_delete\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}s:25:\"delete_expired_transients\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1628109264;a:1:{s:30:\"wp_scheduled_auto_draft_delete\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1628142025;a:1:{s:13:\"wpseo-reindex\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:5:\"daily\";s:4:\"args\";a:0:{}s:8:\"interval\";i:86400;}}}i:1628142027;a:1:{s:16:\"wpseo_ryte_fetch\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:6:\"weekly\";s:4:\"args\";a:0:{}s:8:\"interval\";i:604800;}}}i:1628282033;a:1:{s:30:\"wp_site_health_scheduled_check\";a:1:{s:32:\"40cd750bba9870f18aada2478b24840a\";a:3:{s:8:\"schedule\";s:6:\"weekly\";s:4:\"args\";a:0:{}s:8:\"interval\";i:604800;}}}s:7:\"version\";i:2;}', 'yes'),
 (108, 'widget_pages', 'a:1:{s:12:\"_multiwidget\";i:1;}', 'yes'),
 (109, 'widget_calendar', 'a:1:{s:12:\"_multiwidget\";i:1;}', 'yes'),
 (110, 'widget_media_audio', 'a:1:{s:12:\"_multiwidget\";i:1;}', 'yes'),
@@ -393,7 +395,7 @@ INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`
 (845, 'wp_mail_smtp', 'a:7:{s:4:\"mail\";a:6:{s:10:\"from_email\";s:17:\"no-reply@oqila.uz\";s:9:\"from_name\";s:5:\"OQILA\";s:6:\"mailer\";s:4:\"smtp\";s:11:\"return_path\";b:0;s:16:\"from_email_force\";b:1;s:15:\"from_name_force\";b:0;}s:4:\"smtp\";a:7:{s:7:\"autotls\";b:1;s:4:\"auth\";b:1;s:4:\"host\";s:15:\"smtp.yandex.com\";s:10:\"encryption\";s:3:\"ssl\";s:4:\"port\";i:465;s:4:\"user\";s:17:\"no-reply@oqila.uz\";s:4:\"pass\";s:76:\"W/N8oi1aizyfWraimcdphGhvqQIC67vW/vC1ed+RinqP73pvUrTC3f6hh1k8kzfHSK9wY0eXZ3g=\";}s:7:\"smtpcom\";a:2:{s:7:\"api_key\";s:0:\"\";s:7:\"channel\";s:0:\"\";}s:10:\"sendinblue\";a:2:{s:7:\"api_key\";s:0:\"\";s:6:\"domain\";s:0:\"\";}s:7:\"mailgun\";a:3:{s:7:\"api_key\";s:0:\"\";s:6:\"domain\";s:0:\"\";s:6:\"region\";s:2:\"US\";}s:8:\"sendgrid\";a:2:{s:7:\"api_key\";s:0:\"\";s:6:\"domain\";s:0:\"\";}s:5:\"gmail\";a:2:{s:9:\"client_id\";s:0:\"\";s:13:\"client_secret\";s:0:\"\";}}', 'no'),
 (846, 'wp_mail_smtp_activated_time', '1627725391', 'no'),
 (847, 'wp_mail_smtp_activated', 'a:1:{s:4:\"lite\";i:1627725391;}', 'yes'),
-(850, 'action_scheduler_lock_async-request-runner', '1628076554', 'yes'),
+(850, 'action_scheduler_lock_async-request-runner', '1628078473', 'yes'),
 (851, 'wp_mail_smtp_migration_version', '3', 'yes'),
 (855, 'wp_mail_smtp_activation_prevent_redirect', '1', 'yes'),
 (856, 'wp_mail_smtp_review_notice', 'a:2:{s:4:\"time\";i:1627725399;s:9:\"dismissed\";b:0;}', 'yes'),
@@ -422,7 +424,8 @@ INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`
 (1140, '_transient_timeout_wpseo_unindexed_term_link_count', '1628162705', 'no'),
 (1141, '_transient_wpseo_unindexed_term_link_count', '0', 'no'),
 (1145, '_transient_timeout_as-post-store-dependencies-met', '1628162905', 'no'),
-(1146, '_transient_as-post-store-dependencies-met', 'yes', 'no');
+(1146, '_transient_as-post-store-dependencies-met', 'yes', 'no'),
+(1149, 'action_scheduler_migration_status', 'complete', 'yes');
 
 -- --------------------------------------------------------
 
@@ -830,194 +833,6 @@ INSERT INTO `wp_wpmailsmtp_tasks_meta` (`id`, `action`, `data`, `date`) VALUES
 (3, 'wp_mail_smtp_admin_notifications_update', 'W10=', '2021-08-03 09:12:11'),
 (4, 'wp_mail_smtp_admin_notifications_update', 'W10=', '2021-08-04 09:17:57');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `wp_yoast_indexable`
---
-
-CREATE TABLE `wp_yoast_indexable` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `permalink` longtext COLLATE utf8mb4_unicode_520_ci,
-  `permalink_hash` varchar(40) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `object_id` bigint(20) DEFAULT NULL,
-  `object_type` varchar(32) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `object_sub_type` varchar(32) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `author_id` bigint(20) DEFAULT NULL,
-  `post_parent` bigint(20) DEFAULT NULL,
-  `title` text COLLATE utf8mb4_unicode_520_ci,
-  `description` mediumtext COLLATE utf8mb4_unicode_520_ci,
-  `breadcrumb_title` text COLLATE utf8mb4_unicode_520_ci,
-  `post_status` varchar(20) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `is_public` tinyint(1) DEFAULT NULL,
-  `is_protected` tinyint(1) DEFAULT '0',
-  `has_public_posts` tinyint(1) DEFAULT NULL,
-  `number_of_pages` int(11) UNSIGNED DEFAULT NULL,
-  `canonical` longtext COLLATE utf8mb4_unicode_520_ci,
-  `primary_focus_keyword` varchar(191) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `primary_focus_keyword_score` int(3) DEFAULT NULL,
-  `readability_score` int(3) DEFAULT NULL,
-  `is_cornerstone` tinyint(1) DEFAULT '0',
-  `is_robots_noindex` tinyint(1) DEFAULT '0',
-  `is_robots_nofollow` tinyint(1) DEFAULT '0',
-  `is_robots_noarchive` tinyint(1) DEFAULT '0',
-  `is_robots_noimageindex` tinyint(1) DEFAULT '0',
-  `is_robots_nosnippet` tinyint(1) DEFAULT '0',
-  `twitter_title` text COLLATE utf8mb4_unicode_520_ci,
-  `twitter_image` longtext COLLATE utf8mb4_unicode_520_ci,
-  `twitter_description` longtext COLLATE utf8mb4_unicode_520_ci,
-  `twitter_image_id` varchar(191) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `twitter_image_source` text COLLATE utf8mb4_unicode_520_ci,
-  `open_graph_title` text COLLATE utf8mb4_unicode_520_ci,
-  `open_graph_description` longtext COLLATE utf8mb4_unicode_520_ci,
-  `open_graph_image` longtext COLLATE utf8mb4_unicode_520_ci,
-  `open_graph_image_id` varchar(191) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `open_graph_image_source` text COLLATE utf8mb4_unicode_520_ci,
-  `open_graph_image_meta` mediumtext COLLATE utf8mb4_unicode_520_ci,
-  `link_count` int(11) DEFAULT NULL,
-  `incoming_link_count` int(11) DEFAULT NULL,
-  `prominent_words_version` int(11) UNSIGNED DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `blog_id` bigint(20) NOT NULL DEFAULT '1',
-  `language` varchar(32) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `region` varchar(32) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `schema_page_type` varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `schema_article_type` varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `has_ancestors` tinyint(1) DEFAULT '0',
-  `estimated_reading_time_minutes` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
-
---
--- Dumping data for table `wp_yoast_indexable`
---
-
-INSERT INTO `wp_yoast_indexable` (`id`, `permalink`, `permalink_hash`, `object_id`, `object_type`, `object_sub_type`, `author_id`, `post_parent`, `title`, `description`, `breadcrumb_title`, `post_status`, `is_public`, `is_protected`, `has_public_posts`, `number_of_pages`, `canonical`, `primary_focus_keyword`, `primary_focus_keyword_score`, `readability_score`, `is_cornerstone`, `is_robots_noindex`, `is_robots_nofollow`, `is_robots_noarchive`, `is_robots_noimageindex`, `is_robots_nosnippet`, `twitter_title`, `twitter_image`, `twitter_description`, `twitter_image_id`, `twitter_image_source`, `open_graph_title`, `open_graph_description`, `open_graph_image`, `open_graph_image_id`, `open_graph_image_source`, `open_graph_image_meta`, `link_count`, `incoming_link_count`, `prominent_words_version`, `created_at`, `updated_at`, `blog_id`, `language`, `region`, `schema_page_type`, `schema_article_type`, `has_ancestors`, `estimated_reading_time_minutes`) VALUES
-(1, 'http://wp.loc/author/root_super', '31:525a80e5f3003a09c8f9b01aea99a893', 1, 'user', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, 'https://1.gravatar.com/avatar/4798e8f8d047069a3a78c5f925704660?s=500&d=mm&r=g', NULL, NULL, 'gravatar-image', NULL, NULL, 'https://1.gravatar.com/avatar/4798e8f8d047069a3a78c5f925704660?s=500&d=mm&r=g', NULL, 'gravatar-image', NULL, NULL, NULL, NULL, '2021-07-29 05:40:31', '2021-08-04 06:25:03', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(2, 'http://wp.loc/', '14:f4e150083a38e29c60e98144e0d30421', 2, 'post', 'page', 1, 0, NULL, NULL, 'Home page', 'publish', NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, '2021-07-29 05:40:31', '2021-07-30 04:22:17', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(3, 'http://wp.loc/contacts', '22:06cc5e733339fa00813fa1bab763850f', 33, 'post', 'page', 1, 0, NULL, NULL, 'Contacts', 'publish', NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, '2021-07-29 05:40:31', '2021-07-31 00:25:05', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(4, 'http://wp.loc/?p=37', '19:1226b6427b37b4f4934dbd7d2cdfc912', 37, 'post', 'post', 1, 0, NULL, NULL, 'Auto Draft', 'auto-draft', 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-07-29 05:40:33', '2021-07-31 00:25:05', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(5, 'http://wp.loc/category/uncategorized', '36:687a26eb67b04848c6461d976cb815b5', 1, 'term', 'category', NULL, NULL, NULL, NULL, 'Uncategorized', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, '2021-07-29 05:40:33', '2021-07-31 00:25:05', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(6, NULL, NULL, NULL, 'system-page', '404', NULL, NULL, 'Page not found %%sep%% %%sitename%%', NULL, 'Error 404: Page not found', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-07-29 05:40:34', '2021-07-29 00:40:34', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(7, NULL, NULL, NULL, 'system-page', 'search-result', NULL, NULL, 'You searched for %%searchphrase%% %%page%% %%sep%% %%sitename%%', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-07-29 05:40:34', '2021-07-29 00:40:34', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(8, NULL, NULL, NULL, 'date-archive', NULL, NULL, NULL, '%%date%% %%page%% %%sep%% %%sitename%%', '', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-07-29 05:40:34', '2021-07-29 00:40:34', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(9, 'http://wp.loc/', '14:f4e150083a38e29c60e98144e0d30421', NULL, 'home-page', NULL, NULL, NULL, '%%sitename%% %%page%% %%sep%% %%sitedesc%%', 'Busienss website', 'Home', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, '%%sitename%%', '', '', '0', NULL, NULL, NULL, NULL, NULL, '2021-07-29 05:40:49', '2021-07-30 04:10:59', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(10, 'http://wp.loc/?post_type=contact-info&p=50', '42:fd8a7c19daca5b0689c2a78865eb2204', 50, 'post', 'contact-info', 1, 0, NULL, NULL, 'Auto Draft', 'auto-draft', 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-08-04 11:24:58', '2021-08-04 06:24:58', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(11, 'http://wp.loc/?contact-info=contact-info', '40:03a5d7c6580d3e07fc64979ab7b98560', 49, 'post', 'contact-info', 1, 0, NULL, NULL, 'Contact info', 'publish', NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-08-04 11:24:58', '2021-08-04 06:24:58', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(12, 'http://wp.loc/?post_type=header-footer&p=58', '43:c42f77040d09e701b52b033583bed3b3', 58, 'post', 'header-footer', 1, 0, NULL, NULL, 'Auto Draft', 'auto-draft', 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-08-04 11:24:58', '2021-08-04 06:24:59', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(13, 'http://wp.loc/?post_type=header-footer&p=60', '43:0f4bfeac1f7cfdfa6d6982080ec06b86', 60, 'post', 'header-footer', 1, 0, NULL, NULL, 'Auto Draft', 'auto-draft', 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-08-04 11:24:59', '2021-08-04 06:24:59', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(14, 'http://wp.loc/?header-footer=yuqori-header', '42:294822e49d1d650fbdf7e73ca023db0e', 57, 'post', 'header-footer', 1, 0, NULL, NULL, 'Yuqori (header)', 'publish', NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-08-04 11:25:00', '2021-08-04 06:25:00', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(15, 'http://wp.loc/?header-footer=past-footer', '40:7308796cea288d51e4d103a2d40b793d', 59, 'post', 'header-footer', 1, 0, NULL, NULL, 'Past (footer)', 'publish', NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-08-04 11:25:01', '2021-08-04 06:25:02', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(16, 'http://wp.loc/?page_id=38', '25:6dcda6e3fefc6c95c33b722ba40d35bd', 38, 'post', 'page', 1, 0, NULL, NULL, 'Auto Draft', 'auto-draft', 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-08-04 11:25:02', '2021-08-04 06:25:03', 1, NULL, NULL, NULL, NULL, 0, NULL),
-(17, 'http://wp.loc/?page_id=39', '25:962418c44b9d91f4662799817e1e3368', 39, 'post', 'page', 1, 0, NULL, NULL, 'Auto Draft', 'auto-draft', 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-08-04 11:25:03', '2021-08-04 06:25:03', 1, NULL, NULL, NULL, NULL, 0, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `wp_yoast_indexable_hierarchy`
---
-
-CREATE TABLE `wp_yoast_indexable_hierarchy` (
-  `indexable_id` int(11) UNSIGNED NOT NULL,
-  `ancestor_id` int(11) UNSIGNED NOT NULL,
-  `depth` int(11) UNSIGNED DEFAULT NULL,
-  `blog_id` bigint(20) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
-
---
--- Dumping data for table `wp_yoast_indexable_hierarchy`
---
-
-INSERT INTO `wp_yoast_indexable_hierarchy` (`indexable_id`, `ancestor_id`, `depth`, `blog_id`) VALUES
-(2, 0, 0, 1),
-(3, 0, 0, 1),
-(4, 0, 0, 1),
-(5, 0, 0, 1),
-(9, 0, 0, 1),
-(10, 0, 0, 1),
-(11, 0, 0, 1),
-(12, 0, 0, 1),
-(13, 0, 0, 1),
-(14, 0, 0, 1),
-(15, 0, 0, 1),
-(16, 0, 0, 1),
-(17, 0, 0, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `wp_yoast_migrations`
---
-
-CREATE TABLE `wp_yoast_migrations` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `version` varchar(191) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
-
---
--- Dumping data for table `wp_yoast_migrations`
---
-
-INSERT INTO `wp_yoast_migrations` (`id`, `version`) VALUES
-(1, '20171228151840'),
-(2, '20171228151841'),
-(3, '20190529075038'),
-(4, '20191011111109'),
-(5, '20200408101900'),
-(6, '20200420073606'),
-(7, '20200428123747'),
-(8, '20200428194858'),
-(9, '20200429105310'),
-(10, '20200430075614'),
-(11, '20200430150130'),
-(12, '20200507054848'),
-(13, '20200513133401'),
-(14, '20200609154515'),
-(15, '20200616130143'),
-(16, '20200617122511'),
-(17, '20200702141921'),
-(18, '20200728095334'),
-(19, '20201202144329'),
-(20, '20201216124002'),
-(21, '20201216141134');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `wp_yoast_primary_term`
---
-
-CREATE TABLE `wp_yoast_primary_term` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `post_id` bigint(20) DEFAULT NULL,
-  `term_id` bigint(20) DEFAULT NULL,
-  `taxonomy` varchar(32) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `blog_id` bigint(20) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `wp_yoast_seo_links`
---
-
-CREATE TABLE `wp_yoast_seo_links` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `url` varchar(255) DEFAULT NULL,
-  `post_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `target_post_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `type` varchar(8) DEFAULT NULL,
-  `indexable_id` int(11) UNSIGNED DEFAULT NULL,
-  `target_indexable_id` int(11) UNSIGNED DEFAULT NULL,
-  `height` int(11) UNSIGNED DEFAULT NULL,
-  `width` int(11) UNSIGNED DEFAULT NULL,
-  `size` int(11) UNSIGNED DEFAULT NULL,
-  `language` varchar(32) DEFAULT NULL,
-  `region` varchar(32) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 --
 -- Indexes for dumped tables
 --
@@ -1185,49 +1000,6 @@ ALTER TABLE `wp_wpmailsmtp_tasks_meta`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `wp_yoast_indexable`
---
-ALTER TABLE `wp_yoast_indexable`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `object_type_and_sub_type` (`object_type`,`object_sub_type`),
-  ADD KEY `object_id_and_type` (`object_id`,`object_type`),
-  ADD KEY `permalink_hash_and_object_type` (`permalink_hash`,`object_type`),
-  ADD KEY `subpages` (`post_parent`,`object_type`,`post_status`,`object_id`),
-  ADD KEY `prominent_words` (`prominent_words_version`,`object_type`,`object_sub_type`,`post_status`);
-
---
--- Indexes for table `wp_yoast_indexable_hierarchy`
---
-ALTER TABLE `wp_yoast_indexable_hierarchy`
-  ADD PRIMARY KEY (`indexable_id`,`ancestor_id`),
-  ADD KEY `indexable_id` (`indexable_id`),
-  ADD KEY `ancestor_id` (`ancestor_id`),
-  ADD KEY `depth` (`depth`);
-
---
--- Indexes for table `wp_yoast_migrations`
---
-ALTER TABLE `wp_yoast_migrations`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `wp_yoast_migrations_version` (`version`);
-
---
--- Indexes for table `wp_yoast_primary_term`
---
-ALTER TABLE `wp_yoast_primary_term`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `post_taxonomy` (`post_id`,`taxonomy`),
-  ADD KEY `post_term` (`post_id`,`term_id`);
-
---
--- Indexes for table `wp_yoast_seo_links`
---
-ALTER TABLE `wp_yoast_seo_links`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `link_direction` (`post_id`,`type`),
-  ADD KEY `indexable_link_direction` (`indexable_id`,`type`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -1240,7 +1012,7 @@ ALTER TABLE `wp_actionscheduler_actions`
 -- AUTO_INCREMENT for table `wp_actionscheduler_claims`
 --
 ALTER TABLE `wp_actionscheduler_claims`
-  MODIFY `claim_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `claim_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `wp_actionscheduler_groups`
 --
@@ -1250,7 +1022,7 @@ ALTER TABLE `wp_actionscheduler_groups`
 -- AUTO_INCREMENT for table `wp_actionscheduler_logs`
 --
 ALTER TABLE `wp_actionscheduler_logs`
-  MODIFY `log_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `log_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT for table `wp_commentmeta`
 --
@@ -1270,7 +1042,7 @@ ALTER TABLE `wp_links`
 -- AUTO_INCREMENT for table `wp_options`
 --
 ALTER TABLE `wp_options`
-  MODIFY `option_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1148;
+  MODIFY `option_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1155;
 --
 -- AUTO_INCREMENT for table `wp_postmeta`
 --
@@ -1321,26 +1093,6 @@ ALTER TABLE `wp_wfls_2fa_secrets`
 --
 ALTER TABLE `wp_wpmailsmtp_tasks_meta`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `wp_yoast_indexable`
---
-ALTER TABLE `wp_yoast_indexable`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
---
--- AUTO_INCREMENT for table `wp_yoast_migrations`
---
-ALTER TABLE `wp_yoast_migrations`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
---
--- AUTO_INCREMENT for table `wp_yoast_primary_term`
---
-ALTER TABLE `wp_yoast_primary_term`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `wp_yoast_seo_links`
---
-ALTER TABLE `wp_yoast_seo_links`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
