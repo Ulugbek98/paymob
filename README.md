@@ -7,13 +7,11 @@ OQILA company provides a little customized Wordpress for professional developmen
 1. `WP_DEBUG` is managered by whether DEBUG file created or not in document root folder,
 1. Missing `.htaccess` and `.gitignore` files are provided,
 1. Local environment related configurations are moved to seperate file (`wp-config-local.php`) and ignored by Git,
-1. Domain names are stored at `wp-config-local.php`. No need to change it via database each time you move the project to other domain.
+1. Domain names are stored at `wp-config-local.php`. No need to change it via database each time you move the project to other domain,
 1. Default theme is WP Bootstrap Starter, which is empty and great start point for development of custom themes,
-1. Built-in WP image comression is disabled by making jpeg_quality 100 in `functions.php`. It puts all responsibilities about image quality on developer. Thus you have full control on images.
-1. It comes with pre-installed best plugins:
-    * [ACF](https://wordpress.org/plugins/advanced-custom-fields/) - Extremely flexible custom fields,
-    * [Classic Editor](https://wordpress.org/plugins/classic-editor/) - Work like editor for humankind,
-    * Akismet Anti-Spam - Default spam detector (disabled by default, enable it in production mode),
+1. Built-in WP image comression is disabled by making jpeg_quality 100 in `functions.php`. It puts all responsibilities about image quality on developer. Thus you have full control on images,
+1. Security workarounds,
+1. It comes with pre-installed best plugins.
 
 **Note**: All terminal examples are shown in Linux. If you are using Windows then do it in its way. `{}` means that is example and must be replaced with real value.
 
