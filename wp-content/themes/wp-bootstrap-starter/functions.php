@@ -5,13 +5,22 @@ add_filter( 'jpeg_quality', function( $arg ) {
     return 100;
 });
 
-/**
- * WP Bootstrap Starter functions and definitions
- *
- * @link https://developer.wordpress.org/themes/basics/theme-functions/
- *
- * @package WP_Bootstrap_Starter
- */
+// Easy access for ACF of footer, header and contacts
+function get_contact_field($field)
+{
+    return get_field($field, 49);
+}
+
+function get_header_field($field)
+{
+    return get_field($field, 57);
+}
+
+function get_footer_field($field)
+{
+    return get_field($field, 59);
+}
+
 
 if ( ! function_exists( 'wp_bootstrap_starter_setup' ) ) :
 /**
