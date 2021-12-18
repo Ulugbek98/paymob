@@ -72,7 +72,7 @@ deny from all
 
 RewriteEngine on
 RewriteCond %{HTTP_REFERER} !^$
-RewriteCond %{HTTP_REFERER} !^http://wp.loc [NC]
+RewriteCond %{HTTP_REFERER} !^http://oqila-wp.loc [NC]
 RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?google.com [NC]
 RewriteRule \.(jpg|jpeg|png|gif)$ – [NC,F,L] 
 # END DS-XML-RPC-FIX-HOTLINK

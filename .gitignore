@@ -1,8 +1,6 @@
 # ignore everything in the root except the "wp-content" directory.
 !wp-content/
 
-# we do not need upload files in git, its gitignore is located inside that folder
-
 # ignore these plugins
 wp-content/plugins/hello.php
 
@@ -17,6 +15,9 @@ node_modules/
 
 /DEBUG
 /wp-config-local.php
-
+.htaccess
 wp-content/cache/*
 wp-content/uploads/*
+wp-content/uploads-webpc/*
+/nbproject/private/
+
