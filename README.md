@@ -1,8 +1,8 @@
 # OQILA WP
 
-Customized Wordpress for professional use developed by OQILA Company.
+Customized Wordpress version made by OQILA Company for professional development.
 
-**WARNING**: THIS SOFTWARE IS INTENDED ONLY FOR COMPANY'S INTERNAL USAGE. DISTRIBUTION IS PROHIBITED.
+**WARNING**: THIS SOFTWARE IS INTENDED ONLY FOR INTERNAL USE INSIDE THE COMPANY. DISTRIBUTION IS NOT PERMITTED.
 
 **Note**: Please read `@Dropbox/IB - Umumiy/sayt/dev book.pdf` for datailed information about all changes made to orginal Wordpress. There you can learn how to convert existing Wordpress to OQILA WP.
 
