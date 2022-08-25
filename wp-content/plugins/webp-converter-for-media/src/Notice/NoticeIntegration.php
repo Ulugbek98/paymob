@@ -2,9 +2,10 @@
 
 namespace WebpConverter\Notice;
 
-use WebpConverter\Helper\OptionsAccess;
-use WebpConverter\Helper\ViewLoader;
 use WebpConverter\HookableInterface;
+use WebpConverter\PluginInfo;
+use WebpConverter\Service\OptionsAccessManager;
+use WebpConverter\Service\ViewLoader;
 use WebpConverter\Settings\AdminAssets;
 
 /**
@@ -13,17 +14,18 @@ use WebpConverter\Settings\AdminAssets;
 class NoticeIntegration implements HookableInterface {
 
 	/**
-	 * Object of notice.
-	 *
+	 * @var PluginInfo
+	 */
+	private $plugin_info;
+
+	/**
 	 * @var NoticeInterface
 	 */
 	private $notice;
 
-	/**
-	 * @param NoticeInterface $notice .
-	 */
-	public function __construct( NoticeInterface $notice ) {
-		$this->notice = $notice;
+	public function __construct( PluginInfo $plugin_info, NoticeInterface $notice ) {
+		$this->plugin_info = $plugin_info;
+		$this->notice      = $notice;
 	}
 
 	/**
@@ -48,11 +50,11 @@ class NoticeIntegration implements HookableInterface {
 			return;
 		}
 
-		( new AdminAssets() )->init_hooks();
+		( new AdminAssets( $this->plugin_info ) )->init_hooks();
 		if ( ! is_multisite() ) {
-			add_action( 'admin_notices', [ $this, 'load_notice' ] );
+			add_action( 'admin_notices', [ $this, 'load_notice' ], 0 );
 		} else {
-			add_action( 'network_admin_notices', [ $this, 'load_notice' ] );
+			add_action( 'network_admin_notices', [ $this, 'load_notice' ], 0 );
 		}
 	}
 
@@ -63,7 +65,7 @@ class NoticeIntegration implements HookableInterface {
 	 * @internal
 	 */
 	public function load_notice() {
-		ViewLoader::load_view(
+		( new ViewLoader( $this->plugin_info ) )->load_view(
 			$this->notice->get_output_path(),
 			$this->notice->get_vars_for_view()
 		);
@@ -75,11 +77,11 @@ class NoticeIntegration implements HookableInterface {
 	 * @return void
 	 */
 	public function set_default_value() {
-		if ( OptionsAccess::get_option( $this->notice->get_option_name() ) !== null ) {
+		if ( OptionsAccessManager::get_option( $this->notice->get_option_name() ) !== null ) {
 			return;
 		}
 
-		OptionsAccess::update_option( $this->notice->get_option_name(), $this->notice->get_default_value() );
+		OptionsAccessManager::update_option( $this->notice->get_option_name(), $this->notice->get_default_value() );
 	}
 
 	/**
@@ -88,6 +90,6 @@ class NoticeIntegration implements HookableInterface {
 	 * @return void
 	 */
 	public function set_disable_value() {
-		OptionsAccess::update_option( $this->notice->get_option_name(), $this->notice->get_disable_value() );
+		OptionsAccessManager::update_option( $this->notice->get_option_name(), $this->notice->get_disable_value() );
 	}
 }

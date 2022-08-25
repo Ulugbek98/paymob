@@ -2,6 +2,11 @@
 
 namespace WebpConverter\Loader;
 
+use WebpConverter\Settings\Option\LoaderTypeOption;
+use WebpConverter\Settings\Option\OutputFormatsOption;
+use WebpConverter\Settings\Option\SupportedDirectoriesOption;
+use WebpConverter\Settings\Option\SupportedExtensionsOption;
+
 /**
  * Supports method of loading images using .php file as Pass Thru.
  */
@@ -23,14 +28,15 @@ class PassthruLoader extends LoaderAbstract {
 	 */
 	public function is_active_loader(): bool {
 		$settings = $this->plugin_data->get_plugin_settings();
-		return ( isset( $settings['loader_type'] ) && ( $settings['loader_type'] === self::LOADER_TYPE ) );
+		return ( ( $settings[ LoaderTypeOption::OPTION_NAME ] ?? '' ) === self::LOADER_TYPE );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function activate_loader( bool $is_debug = false ) {
-		$path_source = WEBPC_PATH . self::LOADER_SOURCE;
+		$settings    = ( ! $is_debug ) ? $this->plugin_data->get_plugin_settings() : $this->plugin_data->get_debug_settings();
+		$path_source = $this->plugin_info->get_plugin_directory_path() . self::LOADER_SOURCE;
 		$source_code = ( is_readable( $path_source ) ) ? file_get_contents( $path_source ) ?: '' : '';
 		if ( ! $source_code ) {
 			return;
@@ -39,6 +45,7 @@ class PassthruLoader extends LoaderAbstract {
 		$path_dir_uploads = apply_filters( 'webpc_dir_name', '', 'uploads' );
 		$path_dir_webp    = apply_filters( 'webpc_dir_name', '', 'webp' );
 		$upload_suffix    = implode( '/', array_diff( explode( '/', $path_dir_uploads ), explode( '/', $path_dir_webp ) ) );
+		$mime_types       = $this->format_factory->get_mime_types( $settings[ OutputFormatsOption::OPTION_NAME ] );
 
 		$source_code = preg_replace(
 			'/(PATH_UPLOADS(?:\s+)= \')(\')/',
@@ -52,7 +59,7 @@ class PassthruLoader extends LoaderAbstract {
 		);
 		$source_code = preg_replace(
 			'/(MIME_TYPES(?:\s+)= \')(\')/',
-			'$1' . json_encode( $this->get_mime_types() ) . '$2',
+			'$1' . json_encode( $mime_types ) . '$2',
 			$source_code ?: ''
 		);
 
@@ -101,7 +108,7 @@ class PassthruLoader extends LoaderAbstract {
 		}
 
 		$settings   = ( ! $is_debug ) ? $this->plugin_data->get_plugin_settings() : $this->plugin_data->get_debug_settings();
-		$extensions = implode( '|', $settings['extensions'] ?? [] );
+		$extensions = implode( '|', $settings[ SupportedExtensionsOption::OPTION_NAME ] );
 		if ( ! $extensions || ( ! $source_dir = self::get_loader_url() )
 			|| ( ! $allowed_dirs = $this->get_allowed_dirs( $settings ) ) ) {
 			return $buffer;
@@ -138,7 +145,7 @@ class PassthruLoader extends LoaderAbstract {
 	 */
 	private function get_allowed_dirs( array $settings ): array {
 		$dirs = [];
-		foreach ( $settings['dirs'] as $dir ) {
+		foreach ( $settings[ SupportedDirectoriesOption::OPTION_NAME ] as $dir ) {
 			$dirs[] = apply_filters( 'webpc_dir_name', '', $dir );
 		}
 		return array_filter( $dirs );

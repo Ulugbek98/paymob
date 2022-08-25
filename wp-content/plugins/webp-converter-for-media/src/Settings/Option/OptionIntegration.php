@@ -33,48 +33,28 @@ class OptionIntegration {
 	public function get_option_data( array $settings, bool $is_debug, bool $is_save ): array {
 		$option_name     = $this->option->get_name();
 		$option_type     = $this->option->get_type();
-		$values          = $this->option->get_values( $settings );
+		$values          = $this->option->get_available_values( $settings );
 		$disabled_values = $this->option->get_disabled_values( $settings );
 
 		if ( $is_debug ) {
-			$value = $this->option->get_value_for_debug( $settings );
+			$value = $this->option->get_debug_value( $settings );
 		} else {
 			$value = ( isset( $settings[ $option_name ] ) || $is_save )
-				? $this->get_option_value( $settings[ $option_name ] ?? '', $option_type, $values, $disabled_values )
-				: $this->option->get_default_value( $settings );
+				? $this->option->get_valid_value( $settings[ $option_name ] ?? null, $values, $disabled_values )
+				: null;
 		}
 
+		$value = ( $value !== null ) ? $value : $this->option->get_default_value( $settings );
 		return [
-			'name'     => $this->option->get_name(),
-			'type'     => $option_type,
-			'label'    => $this->option->get_label(),
-			'info'     => $this->option->get_info(),
-			'values'   => $values,
-			'disabled' => $disabled_values,
-			'value'    => $value,
+			'name'         => $this->option->get_name(),
+			'type'         => $option_type,
+			'label'        => $this->option->get_label(),
+			'notice_lines' => $this->option->get_notice_lines(),
+			'info'         => $this->option->get_info(),
+			'values'       => $values,
+			'disabled'     => $disabled_values ?: [],
+			'value'        => $value,
+			'value_public' => $this->option->get_public_value( $value ),
 		];
-	}
-
-	/**
-	 * Returns value of option based on plugin settings.
-	 *
-	 * @param mixed    $current_value   Value from plugin settings.
-	 * @param string   $option_type     Key of option.
-	 * @param string[] $values          Values of option.
-	 * @param string[] $disabled_values Disabled values of option.
-	 *
-	 * @return string[]|string Value of option.
-	 */
-	private function get_option_value( $current_value, string $option_type, array $values, array $disabled_values ) {
-		$valid_values = [];
-		foreach ( (array) $current_value as $option_value ) {
-			if ( array_key_exists( $option_value, $values ) && ! in_array( $option_value, $disabled_values ) ) {
-				$valid_values[] = $option_value;
-			}
-		}
-
-		return ( in_array( $option_type, [ OptionAbstract::OPTION_TYPE_RADIO, OptionAbstract::OPTION_TYPE_QUALITY ] ) )
-			? ( $valid_values[0] ?? '' )
-			: $valid_values;
 	}
 }

@@ -2,35 +2,83 @@
 
 namespace WebpConverter\Conversion\Method;
 
-use WebpConverter\Conversion\Exception;
+use WebpConverter\Conversion\Format\AvifFormat;
+use WebpConverter\Conversion\Format\WebpFormat;
 use WebpConverter\Conversion\OutputPath;
-use WebpConverter\Conversion\SkipLarger;
+use WebpConverter\Exception;
+use WebpConverter\Settings\Option\ExtraFeaturesOption;
 
 /**
- * Abstract class for class that supports endpoint.
+ * Abstract class for class that converts images.
  */
 abstract class MethodAbstract implements MethodInterface {
+
+	/**
+	 * @var OutputPath
+	 */
+	private $output_path;
+
+	public function __construct( OutputPath $output_path = null ) {
+		$this->output_path = $output_path ?: new OutputPath();
+	}
+
+	/**
+	 * @var bool
+	 */
+	protected $is_fatal_error = false;
 
 	/**
 	 * Messages of errors that occurred during conversion.
 	 *
 	 * @var string[]
 	 */
-	private $errors = [];
+	protected $errors = [];
 
 	/**
 	 * Sum of size of source images before conversion.
 	 *
 	 * @var int
 	 */
-	private $size_before = 0;
+	protected $size_before = 0;
 
 	/**
 	 * Sum of size of output images after conversion.
 	 *
 	 * @var int
 	 */
-	private $size_after = 0;
+	protected $size_after = 0;
+
+	/**
+	 * @var int
+	 */
+	protected $files_to_conversion = 0;
+
+	/**
+	 * @var int
+	 */
+	protected $files_converted = 0;
+
+	/**
+	 * @var int[]
+	 */
+	protected $output_files_converted = [
+		WebpFormat::FORMAT_EXTENSION => 0,
+		AvifFormat::FORMAT_EXTENSION => 0,
+	];
+
+	/**
+	 * @return bool
+	 */
+	public static function is_pro_feature(): bool {
+		return false;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function is_fatal_error(): bool {
+		return $this->is_fatal_error;
+	}
 
 	/**
 	 * {@inheritdoc}
@@ -49,74 +97,41 @@ abstract class MethodAbstract implements MethodInterface {
 	/**
 	 * {@inheritdoc}
 	 */
+	public function get_files_to_conversion(): int {
+		return $this->files_to_conversion;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_files_converted(): int {
+		return $this->files_converted;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_files_converted_to_format( string $output_format ): int {
+		return $this->output_files_converted[ $output_format ];
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function get_size_after(): int {
 		return $this->size_after;
 	}
 
 	/**
-	 * {@inheritdoc}
-	 */
-	public function convert_paths( array $paths, array $plugin_settings ) {
-		$output_formats = $plugin_settings['output_formats'];
-		foreach ( $output_formats as $output_format ) {
-			foreach ( $paths as $path ) {
-				try {
-					$response = $this->convert_path( $path, $output_format, $plugin_settings );
-
-					$this->size_before += $response['data']['size_before'];
-					$this->size_after  += $response['data']['size_after'];
-				} catch ( \Exception $e ) {
-					$this->errors[] = $e->getMessage();
-				}
-			}
-		}
-	}
-
-	/**
-	 * {@inheritdoc}
+	 * Checks server path of source image.
 	 *
-	 * @throws Exception\OutputPathException
-	 * @throws Exception\SourcePathException
-	 */
-	public function convert_path( string $path, string $format, array $plugin_settings ): array {
-		ini_set( 'memory_limit', '1G' ); // phpcs:ignore
-		if ( strpos( ini_get( 'disable_functions' ) ?: '', 'set_time_limit' ) === false ) {
-			set_time_limit( 120 );
-		}
-
-		try {
-			$source_path = $this->get_image_source_path( $path );
-			$image       = $this->create_image_by_path( $source_path, $plugin_settings );
-			$output_path = $this->get_image_output_path( $source_path, $format );
-
-			if ( file_exists( $output_path . '.' . SkipLarger::DELETED_FILE_EXTENSION ) ) {
-				unlink( $output_path . '.' . SkipLarger::DELETED_FILE_EXTENSION );
-			}
-
-			$this->convert_image_to_output( $image, $source_path, $output_path, $format, $plugin_settings );
-			do_action( 'webpc_convert_after', $output_path, $source_path );
-
-			return [
-				'success' => true,
-				'message' => null,
-				'data'    => $this->get_conversion_stats( $source_path, $output_path ),
-			];
-		} catch ( \Exception $e ) {
-			$features = $plugin_settings['features'] ?? [];
-			if ( in_array( 'debug_enabled', $features ) ) {
-				error_log( sprintf( 'WebP Converter for Media: %s', $e->getMessage() ) ); // phpcs:ignore
-			}
-
-			throw $e;
-		}
-	}
-
-	/**
-	 * {@inheritdoc}
+	 * @param string $source_path Server path of source image.
+	 *
+	 * @return string Server path of source image.
 	 *
 	 * @throws Exception\SourcePathException
 	 */
-	public function get_image_source_path( string $source_path ): string {
+	protected function get_image_source_path( string $source_path ): string {
 		$path = urldecode( $source_path );
 		if ( ! is_readable( $path ) ) {
 			throw new Exception\SourcePathException( $path );
@@ -126,12 +141,17 @@ abstract class MethodAbstract implements MethodInterface {
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Returns server path for output image.
+	 *
+	 * @param string $source_path Server path of source image.
+	 * @param string $format      Extension of output format.
+	 *
+	 * @return string Server path of output image.
 	 *
 	 * @throws Exception\OutputPathException
 	 */
-	public function get_image_output_path( string $source_path, string $format ): string {
-		if ( ! $output_path = OutputPath::get_path( $source_path, true, $format ) ) {
+	protected function get_image_output_path( string $source_path, string $format ): string {
+		if ( ! $output_path = $this->output_path->get_path( $source_path, true, $format ) ) {
 			throw new Exception\OutputPathException( $source_path );
 		}
 
@@ -139,15 +159,35 @@ abstract class MethodAbstract implements MethodInterface {
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @param string $source_path   Server path of source image.
+	 * @param string $output_path   Server path of output image.
+	 * @param string $output_format .
+	 *
+	 * @return void
 	 */
-	public function get_conversion_stats( string $source_path, string $output_path ): array {
-		$size_before = filesize( $source_path );
-		$size_after  = ( file_exists( $output_path ) ) ? filesize( $output_path ) : $size_before;
+	protected function update_conversion_stats( string $source_path, string $output_path, string $output_format ) {
+		$output_exist = file_exists( $output_path );
+		$size_before  = filesize( $source_path );
+		$size_after   = ( $output_exist ) ? filesize( $output_path ) : $size_before;
 
-		return [
-			'size_before' => $size_before ?: 0,
-			'size_after'  => $size_after ?: 0,
-		];
+		$this->size_before += $size_before ?: 0;
+		$this->size_after  += $size_after ?: 0;
+
+		if ( $output_exist ) {
+			$this->files_converted++;
+		}
+	}
+
+	/**
+	 * @param string  $error_message   .
+	 * @param mixed[] $plugin_settings .
+	 *
+	 * @return void
+	 */
+	protected function log_conversion_error( string $error_message, array $plugin_settings ) {
+		$features = $plugin_settings[ ExtraFeaturesOption::OPTION_NAME ];
+		if ( in_array( ExtraFeaturesOption::OPTION_VALUE_DEBUG_ENABLED, $features ) ) {
+			error_log( sprintf( 'Converter for Media: %s', $error_message ) ); // phpcs:ignore
+		}
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace WebpConverter\Notice;
 
-use WebpConverter\Helper\OptionsAccess;
+use WebpConverter\Service\OptionsAccessManager;
 
 /**
  * Supports notice displayed as thank you for using plugin.
@@ -38,7 +38,7 @@ class ThanksNotice extends NoticeAbstract implements NoticeInterface {
 	 * {@inheritdoc}
 	 */
 	public function is_active(): bool {
-		$option_value = OptionsAccess::get_option( $this->get_option_name() );
+		$option_value = OptionsAccessManager::get_option( $this->get_option_name() );
 		return ( ( $option_value !== null ) && ( $option_value < time() ) );
 	}
 
@@ -47,7 +47,7 @@ class ThanksNotice extends NoticeAbstract implements NoticeInterface {
 	 */
 	public function get_disable_value(): string {
 		$is_permanent = ( isset( $_REQUEST['is_permanently'] ) && $_REQUEST['is_permanently'] ); // phpcs:ignore
-		return (string) strtotime( ( $is_permanent ) ? '+6 months' : '+ 1 month' );
+		return (string) strtotime( ( $is_permanent ) ? '+1 year' : '+ 1 month' );
 	}
 
 	/**
@@ -62,7 +62,8 @@ class ThanksNotice extends NoticeAbstract implements NoticeInterface {
 	 */
 	public function get_vars_for_view(): array {
 		return [
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'ajax_url'     => admin_url( 'admin-ajax.php' ),
+			'close_action' => self::NOTICE_OPTION,
 		];
 	}
 
@@ -70,6 +71,6 @@ class ThanksNotice extends NoticeAbstract implements NoticeInterface {
 	 * {@inheritdoc}
 	 */
 	public function get_ajax_action_to_disable(): string {
-		return 'webpc_notice';
+		return self::NOTICE_OPTION;
 	}
 }

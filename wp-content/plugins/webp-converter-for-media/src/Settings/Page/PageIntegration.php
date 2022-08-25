@@ -5,6 +5,8 @@ namespace WebpConverter\Settings\Page;
 use WebpConverter\HookableInterface;
 use WebpConverter\Notice\NoticeIntegration;
 use WebpConverter\Notice\WelcomeNotice;
+use WebpConverter\PluginInfo;
+use WebpConverter\Service\ViewLoader;
 use WebpConverter\Settings\AdminAssets;
 
 /**
@@ -13,6 +15,21 @@ use WebpConverter\Settings\AdminAssets;
 class PageIntegration implements HookableInterface {
 
 	const ADMIN_MENU_PAGE = 'webpc_admin_page';
+
+	/**
+	 * @var PluginInfo
+	 */
+	private $plugin_info;
+
+	/**
+	 * @var ViewLoader
+	 */
+	private $view_loader;
+
+	public function __construct( PluginInfo $plugin_info, ViewLoader $view_loader = null ) {
+		$this->plugin_info = $plugin_info;
+		$this->view_loader = $view_loader ?: new ViewLoader( $plugin_info );
+	}
 
 	/**
 	 * Objects of supported plugin settings pages.
@@ -45,14 +62,21 @@ class PageIntegration implements HookableInterface {
 	/**
 	 * Returns URL of plugin settings page.
 	 *
+	 * @param string|null $action .
+	 *
 	 * @return string
 	 */
-	public static function get_settings_page_url(): string {
+	public static function get_settings_page_url( string $action = null ): string {
 		if ( ! is_multisite() ) {
-			return menu_page_url( self::ADMIN_MENU_PAGE, false );
+			$page_url = menu_page_url( self::ADMIN_MENU_PAGE, false );
 		} else {
-			return network_admin_url( 'settings.php?page=' . self::ADMIN_MENU_PAGE );
+			$page_url = network_admin_url( 'settings.php?page=' . self::ADMIN_MENU_PAGE );
 		}
+
+		if ( $action !== null ) {
+			$page_url .= '&action=' . $action;
+		}
+		return $page_url;
 	}
 
 	/**
@@ -88,8 +112,8 @@ class PageIntegration implements HookableInterface {
 	private function add_settings_page( string $menu_page ) {
 		$page = add_submenu_page(
 			$menu_page,
-			'WebP Converter for Media',
-			'WebP Converter',
+			'Converter for Media',
+			'Converter for Media',
 			'manage_options',
 			self::ADMIN_MENU_PAGE,
 			[ $this, 'load_settings_page' ]
@@ -104,24 +128,29 @@ class PageIntegration implements HookableInterface {
 	 * @internal
 	 */
 	public function load_settings_page() {
+		$current_tab_name = $_GET['action'] ?? null; // phpcs:ignore WordPress.Security
 		foreach ( $this->pages as $page ) {
-			$this->init_page_is_active( $page );
+			if ( $page->get_slug() === $current_tab_name ) {
+				$this->view_loader->load_view(
+					$page->get_template_path(),
+					array_merge(
+						$page->get_template_vars(),
+						[
+							'menu_items' => array_map(
+								function ( PageInterface $settings_page ) use ( $current_tab_name ) {
+									return [
+										'url'       => self::get_settings_page_url( $settings_page->get_slug() ),
+										'title'     => $settings_page->get_label(),
+										'is_active' => ( $settings_page->get_slug() === $current_tab_name ),
+									];
+								},
+								$this->pages
+							),
+						]
+					)
+				);
+			}
 		}
-	}
-
-	/**
-	 * Initializes page loading if is active.
-	 *
-	 * @param PageInterface $page .
-	 *
-	 * @return void
-	 */
-	private function init_page_is_active( PageInterface $page ) {
-		if ( ! $page->is_page_active() ) {
-			return;
-		}
-
-		$page->show_page_view();
 	}
 
 	/**
@@ -131,7 +160,7 @@ class PageIntegration implements HookableInterface {
 	 * @internal
 	 */
 	public function load_scripts_for_page() {
-		( new NoticeIntegration( new WelcomeNotice() ) )->set_disable_value();
-		( new AdminAssets() )->init_hooks();
+		( new NoticeIntegration( $this->plugin_info, new WelcomeNotice() ) )->set_disable_value();
+		( new AdminAssets( $this->plugin_info ) )->init_hooks();
 	}
 }

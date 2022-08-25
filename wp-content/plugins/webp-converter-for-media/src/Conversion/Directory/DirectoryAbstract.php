@@ -2,6 +2,8 @@
 
 namespace WebpConverter\Conversion\Directory;
 
+use WebpConverter\Service\PathsGenerator;
+
 /**
  * Abstract class for class that supports data about directory.
  */
@@ -32,9 +34,12 @@ abstract class DirectoryAbstract implements DirectoryInterface {
 	 * {@inheritdoc}
 	 */
 	public function get_server_path(): string {
-		$source_path    = apply_filters( 'webpc_site_root', realpath( ABSPATH ) );
 		$directory_name = apply_filters( 'webpc_dir_name', $this->get_relative_path(), $this->get_type() );
-		return sprintf( '%1$s/%2$s', $source_path, $directory_name );
+		return sprintf(
+			'%1$s/%2$s',
+			rtrim( PathsGenerator::get_wordpress_root_path(), DIRECTORY_SEPARATOR ),
+			$directory_name
+		);
 	}
 
 	/**

@@ -13,6 +13,8 @@ $v = explode( ',', $this->get_option( 'lockout_notify' ) );
 $email_checked = in_array( 'email', $v ) ? ' checked ' : '';
 
 $show_top_level_menu_item = $this->get_option( 'show_top_level_menu_item' );
+$hide_dashboard_widget = $this->get_option( 'hide_dashboard_widget' );
+$show_warning_badge = $this->get_option( 'show_warning_badge' );
 
 $admin_notify_email = $this->get_option( 'admin_notify_email' );
 $admin_email_placeholder = (!is_multisite()) ? get_option( 'admin_email' ) : get_site_option( 'admin_email' );
@@ -98,6 +100,20 @@ $active_app_config = $this->get_custom_app_config();
                 valign="top"><?php echo __( 'Show top-level menu item', 'limit-login-attempts-reloaded' ); ?></th>
             <td>
                 <input type="checkbox" name="show_top_level_menu_item" <?php checked( $show_top_level_menu_item ); ?>> <?php _e( '(Reload the page to see the changes)', 'limit-login-attempts-reloaded' ) ?>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"
+                valign="top"><?php echo __( 'Hide Dashboard Widget', 'limit-login-attempts-reloaded' ); ?></th>
+            <td>
+                <input type="checkbox" name="hide_dashboard_widget" <?php checked( $hide_dashboard_widget ); ?>>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"
+                valign="top"><?php echo __( 'Show Warning Badge', 'limit-login-attempts-reloaded' ); ?></th>
+            <td>
+                <input type="checkbox" name="show_warning_badge" <?php checked( $show_warning_badge ); ?>> <?php _e( '(Reload the page to see the changes)', 'limit-login-attempts-reloaded' ) ?>
             </td>
         </tr>
         <tr>
@@ -192,7 +208,7 @@ $active_app_config = $this->get_custom_app_config();
                                 <li><span class="dashicons dashicons-yes"></span><?php _e( 'Sync the allow/deny/pass lists between multiple domains', 'limit-login-attempts-reloaded' ); ?></li>
                                 <li><span class="dashicons dashicons-yes"></span><?php _e( 'Get premium support', 'limit-login-attempts-reloaded' ); ?></li>
                                 <li><span class="dashicons dashicons-yes"></span><?php _e( 'Run auto backups of access control lists, lockouts and logs', 'limit-login-attempts-reloaded' ); ?></li>
-                                <li><span class="dashicons dashicons-yes"></span><?php _e( 'Only pay $4.99/m per domain - cancel any time', 'limit-login-attempts-reloaded' ); ?></li>
+                                <li><span class="dashicons dashicons-yes"></span><?php _e( 'Only pay $7.99/m per domain - cancel any time', 'limit-login-attempts-reloaded' ); ?></li>
                             </ul>
                         </div>
                         <?php endif; ?>

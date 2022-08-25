@@ -1,0 +1,17 @@
+<?php
+
+/** The name of the database for WordPress */
+define( 'DB_NAME', '' );
+
+/** MySQL database username */
+define( 'DB_USER', '' );
+
+/** MySQL database password */
+define( 'DB_PASSWORD', '' );
+
+/** Do not do it database, db should be empty */
+define( 'WP_HOME', 'http://example.com' );
+define( 'WP_SITEURL', 'http://example.com' );
+
+/** Upload methos */
+define('FS_METHOD', 'direct');

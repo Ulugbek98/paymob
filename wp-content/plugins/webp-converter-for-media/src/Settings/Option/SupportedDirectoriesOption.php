@@ -5,17 +5,24 @@ namespace WebpConverter\Settings\Option;
 use WebpConverter\Conversion\Directory\DirectoryFactory;
 
 /**
- * Handles data about "Supported directories" field in plugin settings.
+ * {@inheritdoc}
  */
 class SupportedDirectoriesOption extends OptionAbstract {
 
-	const LOADER_TYPE = 'dirs';
+	const OPTION_NAME = 'dirs';
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_name(): string {
-		return self::LOADER_TYPE;
+		return self::OPTION_NAME;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_form_name(): string {
+		return OptionAbstract::FORM_TYPE_BASIC;
 	}
 
 	/**
@@ -36,35 +43,48 @@ class SupportedDirectoriesOption extends OptionAbstract {
 	 * {@inheritdoc}
 	 */
 	public function get_info(): string {
-		return __( 'Files from these directories will be supported in output formats.', 'webp-converter-for-media' );
+		return __( 'Files from these directories will be converted to output formats.', 'webp-converter-for-media' );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @return string[]
+	 */
+	public function get_available_values( array $settings ): array {
+		return ( new DirectoryFactory() )->get_directories();
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_values( array $settings ): array {
-		return ( new DirectoryFactory() )->get_directories();
+	public function get_valid_value( $current_value, array $available_values = null, array $disabled_values = null ) {
+		$valid_values = [];
+		foreach ( $current_value as $option_value ) {
+			if ( array_key_exists( $option_value, $available_values ?: [] )
+				&& ! in_array( $option_value, $disabled_values ?: [] ) ) {
+				$valid_values[] = $option_value;
+			}
+		}
+
+		return $valid_values;
 	}
 
 	/**
-	 * Returns default value of field.
+	 * {@inheritdoc}
 	 *
-	 * @param mixed[]|null $settings Plugin settings.
-	 *
-	 * @return string[] Default value of field.
+	 * @return string[]
 	 */
 	public function get_default_value( array $settings = null ): array {
 		return [ 'uploads' ];
 	}
 
 	/**
-	 * Returns default value of field when debugging.
+	 * {@inheritdoc}
 	 *
-	 * @param mixed[] $settings Plugin settings.
-	 *
-	 * @return string[] Default value of field for debug.
+	 * @return string[]
 	 */
-	public function get_value_for_debug( array $settings ): array {
+	public function get_debug_value( array $settings ): array {
 		return [ 'uploads' ];
 	}
 }

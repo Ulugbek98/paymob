@@ -3,17 +3,24 @@
 namespace WebpConverter\Settings\Option;
 
 /**
- * Handles data about "Supported files extensions" field in plugin settings.
+ * {@inheritdoc}
  */
 class SupportedExtensionsOption extends OptionAbstract {
 
-	const LOADER_TYPE = 'extensions';
+	const OPTION_NAME = 'extensions';
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_name(): string {
-		return self::LOADER_TYPE;
+		return self::OPTION_NAME;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_form_name(): string {
+		return OptionAbstract::FORM_TYPE_ADVANCED;
 	}
 
 	/**
@@ -33,34 +40,61 @@ class SupportedExtensionsOption extends OptionAbstract {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_values( array $settings ): array {
+	public function get_info(): string {
+		return __( 'Files from supported directories that will be converted to output formats.', 'webp-converter-for-media' );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @return string[]
+	 */
+	public function get_available_values( array $settings ): array {
 		return [
-			'jpg'  => '.jpg',
-			'jpeg' => '.jpeg',
+			'jpg'  => '.jpg / .jpeg',
 			'png'  => '.png',
 			'gif'  => '.gif',
+			'webp' => sprintf(
+			/* translators: %s: file extension */
+				__( '%s (converting to AVIF only)', 'webp-converter-for-media' ),
+				'.webp'
+			),
 		];
 	}
 
 	/**
-	 * Returns default value of field.
-	 *
-	 * @param mixed[]|null $settings Plugin settings.
-	 *
-	 * @return string[] Default value of field.
+	 * {@inheritdoc}
 	 */
-	public function get_default_value( array $settings = null ): array {
-		return [ 'jpg', 'jpeg', 'png' ];
+	public function get_valid_value( $current_value, array $available_values = null, array $disabled_values = null ) {
+		$valid_values = [];
+		foreach ( $current_value as $option_value ) {
+			if ( array_key_exists( $option_value, $available_values ?: [] )
+				&& ! in_array( $option_value, $disabled_values ?: [] ) ) {
+				$valid_values[] = $option_value;
+			}
+		}
+		if ( in_array( 'jpg', $current_value ) ) {
+			$valid_values[] = 'jpeg';
+		}
+
+		return $valid_values;
 	}
 
 	/**
-	 * Returns default value of field when debugging.
+	 * {@inheritdoc}
 	 *
-	 * @param mixed[] $settings Plugin settings.
-	 *
-	 * @return string[] Default value of field for debug.
+	 * @return string[]
 	 */
-	public function get_value_for_debug( array $settings ): array {
+	public function get_default_value( array $settings = null ): array {
+		return [ 'jpg', 'png', 'webp' ];
+	}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @return string[]
+	 */
+	public function get_debug_value( array $settings ): array {
 		return [ 'png2', 'png' ];
 	}
 }

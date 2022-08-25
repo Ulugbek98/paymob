@@ -4,13 +4,12 @@ namespace WebpConverter\Conversion\Directory;
 
 use WebpConverter\Conversion\OutputPath;
 use WebpConverter\HookableInterface;
+use WebpConverter\Service\PathsGenerator;
 
 /**
  * Returns various types of paths for directories.
  */
 class DirectoryIntegration implements HookableInterface {
-
-	const DIRS_EXCLUDED = [ '.', '..', '.git', '.svn', 'node_modules' ];
 
 	/**
 	 * Objects of supported directories.
@@ -20,14 +19,21 @@ class DirectoryIntegration implements HookableInterface {
 	private $directories = [];
 
 	/**
+	 * @var OutputPath
+	 */
+	private $output_path;
+
+	public function __construct( OutputPath $output_path = null ) {
+		$this->output_path = $output_path ?: new OutputPath();
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function init_hooks() {
 		add_filter( 'webpc_dir_name', [ $this, 'get_dir_as_name' ], 0, 2 );
 		add_filter( 'webpc_dir_path', [ $this, 'get_dir_as_path' ], 0, 2 );
 		add_filter( 'webpc_dir_url', [ $this, 'get_dir_as_url' ], 0, 2 );
-		add_filter( 'webpc_uploads_prefix', [ $this, 'get_prefix_path' ], 0 );
-		add_filter( 'webpc_dir_excluded', [ $this, 'get_excluded_dirs' ], 0 );
 	}
 
 	/**
@@ -66,7 +72,7 @@ class DirectoryIntegration implements HookableInterface {
 		$values = [];
 		foreach ( $this->directories as $directory ) {
 			if ( ! $directory->is_output_directory()
-				&& ( $output_path = OutputPath::get_directory_path( $directory->get_server_path() ) )
+				&& ( $output_path = $this->output_path->get_directory_path( $directory->get_server_path() ) )
 				&& ( $output_path !== $directory->get_server_path() ) ) {
 				$values[ $directory->get_type() ] = $output_path;
 			}
@@ -109,8 +115,11 @@ class DirectoryIntegration implements HookableInterface {
 			}
 		}
 
-		$source_path = apply_filters( 'webpc_site_root', realpath( ABSPATH ) );
-		return sprintf( '%1$s/%2$s', $source_path, $directory_name );
+		return sprintf(
+			'%1$s/%2$s',
+			rtrim( PathsGenerator::get_wordpress_root_path(), DIRECTORY_SEPARATOR ),
+			$directory_name
+		);
 	}
 
 	/**
@@ -134,30 +143,5 @@ class DirectoryIntegration implements HookableInterface {
 
 		$source_url = apply_filters( 'webpc_site_url', get_site_url() );
 		return sprintf( '%1$s/%2$s', $source_url, $directory_name );
-	}
-
-	/**
-	 * Returns prefix for wp-content directory for rules in .htaccess file.
-	 *
-	 * @return string Prefix for wp-content directory.
-	 * @internal
-	 */
-	public function get_prefix_path(): string {
-		$doc_dir   = realpath( $_SERVER['DOCUMENT_ROOT'] ) ?: ''; // phpcs:ignore
-		$wp_rir    = apply_filters( 'webpc_site_root', realpath( ABSPATH ) );
-		$diff_dir  = trim( str_replace( $doc_dir, '', $wp_rir ), '\/' );
-		$diff_path = sprintf( '/%s/', $diff_dir );
-
-		return str_replace( '//', '/', $diff_path );
-	}
-
-	/**
-	 * Returns list of directories excluded from source file search.
-	 *
-	 * @return string[] Relative paths of excluded directories.
-	 * @internal
-	 */
-	public function get_excluded_dirs(): array {
-		return self::DIRS_EXCLUDED;
 	}
 }

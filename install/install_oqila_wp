@@ -1,0 +1,23 @@
+#!/bin/bash
+
+##
+ # This file is part of the OQILA WP project.
+ #
+ # (c) 2020 OQILA COMPUTER, LLC.
+ # @author Fazliddin Juraev
+ # 
+ # For the full copyright and license information, please view the LICENSE file
+ # that was distributed with this source code.
+ ##
+
+# Installs OQILA WP files
+
+cp ./data/wp-config-local.php.dist ./../;
+cp ./../wp-config-local.php.dist ./../wp-config-local.php;
+echo -e "Do not forget to edit wp-config-local.php file\n";
+
+echo -e "Delete those lines from wp-config.php\ndefine( 'DB_NAME', '' );\ndefine( 'DB_USER', '' );\ndefine( 'DB_PASSWORD', '' );\ndefine( 'WP_DEBUG', false );\n";
+
+cp ./data/index.php ./../;
+
+echo -e "That is all!\n";

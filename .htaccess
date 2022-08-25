@@ -58,8 +58,15 @@ deny from all
 # The directives (lines) between "BEGIN DS-XML-RPC-API" and "END DS-XML-RPC-API" are
 # dynamically generated, and should only be modified via WordPress filters.
 # Any changes to the directives between these markers will be overwritten.
+
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http://oqila-wp.loc [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?google.com [NC]
+RewriteRule \.(jpg|jpeg|png|gif)$ – [NC,F,L]
+
 <Files xmlrpc.php>
-order deny,allow 
+order deny,allow
 deny from all
 
 </Files>

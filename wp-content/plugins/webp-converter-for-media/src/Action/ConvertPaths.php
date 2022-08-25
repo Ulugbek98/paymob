@@ -12,13 +12,10 @@ use WebpConverter\PluginData;
 class ConvertPaths implements HookableInterface {
 
 	/**
-	 * @var PluginData .
+	 * @var PluginData
 	 */
 	private $plugin_data;
 
-	/**
-	 * @param PluginData $plugin_data .
-	 */
 	public function __construct( PluginData $plugin_data ) {
 		$this->plugin_data = $plugin_data;
 	}
@@ -40,28 +37,22 @@ class ConvertPaths implements HookableInterface {
 	 */
 	public function convert_files_by_paths( array $paths ) {
 		( new MethodIntegrator( $this->plugin_data ) )
-			->init_conversion( $this->remove_paths_of_excluded_dirs( $paths ) );
+			->init_conversion( $this->remove_paths_from_excluded_paths( $paths ), false );
 	}
 
 	/**
-	 * Removes paths of source images in excluded directories.
+	 * Removes paths of source images from excluded paths.
 	 *
-	 * @param string[] $paths Server paths of images.
+	 * @param string[] $source_paths Server paths of images.
 	 *
-	 * @return string[] Server paths of images.
+	 * @return string[]
 	 */
-	private function remove_paths_of_excluded_dirs( array $paths ): array {
-		$excluded_dirs = apply_filters( 'webpc_dir_excluded', [] );
-		foreach ( $paths as $path_index => $path ) {
-			foreach ( $excluded_dirs as $excluded_dir ) {
-				$dir_pattern = str_replace( '.', '\.', $excluded_dir );
-				if ( ! preg_match( '/(\\\\|\/)(' . $dir_pattern . ')(\\\\|\/)/', $path ) ) {
-					continue;
-				}
-				unset( $paths[ $path_index ] );
-				break;
+	private function remove_paths_from_excluded_paths( array $source_paths ): array {
+		foreach ( $source_paths as $path_index => $path ) {
+			if ( ! apply_filters( 'webpc_supported_source_file', true, basename( $path ), $path ) ) {
+				unset( $source_paths[ $path_index ] );
 			}
 		}
-		return $paths;
+		return $source_paths;
 	}
 }

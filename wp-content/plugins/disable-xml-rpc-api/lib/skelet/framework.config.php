@@ -28,6 +28,7 @@ if( class_exists( 'SKELET' ) ) {
     'menu_type'        => 'menu',
     'menu_icon'        => 'dashicons-shield-alt',
     'theme'            => 'dark',
+    'nav'              => 'normal',
     'menu_capability'  => 'edit_users',
     'show_reset_section'  => false,
     'show_search'      => true,
@@ -102,14 +103,14 @@ Back in 2013, attackers sent Pingback requests through xmlrpc.php of approximate
 	  'help'    => 'Leave empty if you dont want to change it',
 	  'desc'    => 'If you dont want to disable XML-RPC entirely you can change the xmlrpc.php slug to whatever you want to prevent automated attacks',
 	  'dependency' => array( 'dsxmlrpc-switcher', '==', 'true' ),
-	  'placeholder' => 'mobile-api'
+	  'placeholder' => 'Example: mobile-api'
 	),
 			  array(
 	  'id'      => 'jetpack-switcher',
 	  'type'    => 'switcher',
 	  'title'   => 'Enable xml-rpc for Jetpack',
 	  'label'   => 'This switch will add Jetpack servers IP range to the whitelist',
-	  'default' => true,
+	  'default' => false,
 	  'dependency' => array( 'dsxmlrpc-switcher', '==', 'false' ),
 	  
 	),
@@ -234,7 +235,14 @@ Back in 2013, attackers sent Pingback requests through xmlrpc.php of approximate
 	  'id'      => 'json-rest-api',
 	  'type'    => 'switcher',
 	  'title'   => 'Disable JSON REST API',
-	  'desc'    => 'disable the JSON REST API for logged out users',
+	  'desc'    => 'disable the JSON REST API for not logged in users',
+	  'default' => false,
+	),
+	array(
+	  'id'      => 'htaccess protection',
+	  'type'    => 'switcher',
+	  'title'   => 'Disable writing in htaccess file',
+	  'desc'    => 'Protect your website by changing htaccess file permission to read-only (0444)',
 	  'default' => false,
 	),
 	array(
@@ -242,14 +250,14 @@ Back in 2013, attackers sent Pingback requests through xmlrpc.php of approximate
 	  'type'    => 'switcher',
 	  'title'   => 'Hide WordPress Version',
 	  'desc'    => 'Remove WordPress version for security reasons',
-	  'default' => true,
+	  'default' => false,
 	),
 	array(
 	  'id'      => 'disable-code-editor',
 	  'type'    => 'switcher',
 	  'title'   => 'Disable built-in WordPress file editor',
 	  'desc'    => 'Disable WordPress file editor for security reasons',
-	  'default' => true,
+	  'default' => false,
 	  'help'    => 'If you want to edit your themes and plugins codes you need to switch off this option!'
 	),
 	array(
@@ -283,9 +291,9 @@ Back in 2013, attackers sent Pingback requests through xmlrpc.php of approximate
 	  'id'      => 'hotlink-fix',
 	  'type'    => 'switcher',
 	  'title'   => 'Hotlink Fix',
-	  'desc'    => 'Disable Hotlinking and Leaching of Your Content',
-	  'help'    => 'disable hotlinking of images with forbidden or custom image option',
-	  'default' => true,
+	  'desc'    => 'Disable Hotlinking and Leaching of Your Content (On means it will prevent hotlinking)',
+	  'help'    => 'disable hotlinking of images with forbidden',
+	  'default' => false,
 	),
 	array(
 	  'id'      => 'remove-emojis',

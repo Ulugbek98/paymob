@@ -2,8 +2,12 @@
 
 namespace WebpConverter\Conversion\Media;
 
+use WebpConverter\Conversion\Cron\CronInitiator;
 use WebpConverter\HookableInterface;
 use WebpConverter\PluginData;
+use WebpConverter\Repository\TokenRepository;
+use WebpConverter\Settings\Option\AutoConversionOption;
+use WebpConverter\Settings\Option\SupportedExtensionsOption;
 
 /**
  * Initializes image conversion when uploading images to media library.
@@ -11,22 +15,29 @@ use WebpConverter\PluginData;
 class Upload implements HookableInterface {
 
 	/**
-	 * @var PluginData .
+	 * @var PluginData
 	 */
 	private $plugin_data;
+
+	/**
+	 * @var CronInitiator
+	 */
+	private $cron_initiator;
 
 	/**
 	 * Paths of converted images.
 	 *
 	 * @var string[]
 	 */
-	private $converted_paths = [];
+	private $uploaded_paths = [];
 
-	/**
-	 * @param PluginData $plugin_data .
-	 */
-	public function __construct( PluginData $plugin_data ) {
-		$this->plugin_data = $plugin_data;
+	public function __construct(
+		PluginData $plugin_data,
+		TokenRepository $token_repository,
+		CronInitiator $cron_initiator = null
+	) {
+		$this->plugin_data    = $plugin_data;
+		$this->cron_initiator = $cron_initiator ?: new CronInitiator( $plugin_data, $token_repository );
 	}
 
 	/**
@@ -39,24 +50,33 @@ class Upload implements HookableInterface {
 	/**
 	 * Initializes converting attachment images while attachment is uploaded.
 	 *
-	 * @param mixed[] $data          Updated attachment meta data.
-	 * @param int     $attachment_id ID of attachment.
+	 * @param mixed[]|null $data          Updated attachment meta data.
+	 * @param int|null     $attachment_id ID of attachment.
 	 *
-	 * @return mixed[] Attachment meta data.
+	 * @return mixed[]|null Attachment meta data.
 	 * @internal
 	 */
-	public function init_attachment_convert( array $data, int $attachment_id ): array {
-		if ( ! $data || ! isset( $data['file'] ) || ! isset( $data['sizes'] ) ) {
+	public function init_attachment_convert( array $data = null, int $attachment_id = null ) {
+		if ( ( $data === null ) || ( $attachment_id === null )
+			|| ! is_array( $data ) || ! isset( $data['file'] ) || ! isset( $data['sizes'] ) ) {
 			return $data;
 		}
 
-		$paths = $this->get_sizes_paths( $data );
-		$paths = apply_filters( 'webpc_attachment_paths', $paths, $attachment_id );
-		$paths = apply_filters( 'webpc_files_paths', $paths, false );
+		$plugin_settings = $this->plugin_data->get_plugin_settings();
+		if ( ! $plugin_settings[ AutoConversionOption::OPTION_NAME ] ) {
+			return $data;
+		}
 
-		$paths                 = array_diff( $paths, $this->converted_paths );
-		$this->converted_paths = array_merge( $this->converted_paths, $paths );
-		$this->init_conversion( $paths );
+		$file_extension = strtolower( pathinfo( $data['file'], PATHINFO_EXTENSION ) );
+		if ( ! in_array( $file_extension, $plugin_settings[ SupportedExtensionsOption::OPTION_NAME ] ) ) {
+			return $data;
+		}
+
+		$paths                = $this->get_sizes_paths( $data );
+		$paths                = apply_filters( 'webpc_attachment_paths', $paths, $attachment_id );
+		$this->uploaded_paths = array_merge( $this->uploaded_paths, $paths );
+
+		add_action( 'shutdown', [ $this, 'save_paths_to_conversion' ] );
 
 		return $data;
 	}
@@ -71,6 +91,10 @@ class Upload implements HookableInterface {
 	private function get_sizes_paths( array $data ): array {
 		$directory = $this->get_attachment_directory( $data['file'] );
 		$list      = [];
+
+		if ( isset( $data['original_image'] ) ) {
+			$list[] = $directory . $data['original_image'];
+		}
 
 		$list[] = $directory . basename( $data['file'] );
 		foreach ( $data['sizes'] as $size ) {
@@ -90,26 +114,25 @@ class Upload implements HookableInterface {
 	 * @return string Server path of source image.
 	 */
 	private function get_attachment_directory( string $path ): string {
-		$upload = wp_upload_dir();
-		$source = rtrim( $upload['basedir'], '/\\' ) . '/' . rtrim( dirname( $path ), '/\\' ) . '/';
-		$source = str_replace( '\\', '/', $source );
-		return $source;
+		$upload         = wp_upload_dir();
+		$path_directory = rtrim( dirname( $path ), '/\\.' );
+		$source         = rtrim( $upload['basedir'], '/\\' ) . '/' . $path_directory . '/';
+
+		return str_replace( '\\', '/', $source );
 	}
 
 	/**
-	 * Initializes conversion of attachment image sizes.
-	 *
-	 * @param string[] $paths Server paths of source images.
-	 *
 	 * @return void
+	 *
+	 * @internal
 	 */
-	private function init_conversion( array $paths ) {
-		$settings = $this->plugin_data->get_plugin_settings();
-
-		if ( in_array( 'cron_conversion', $settings['features'] ) ) {
-			wp_schedule_single_event( ( time() + 1 ), 'webpc_convert_paths', [ $paths ] );
-		} else {
-			do_action( 'webpc_convert_paths', $paths );
+	public function save_paths_to_conversion() {
+		$paths = array_unique( $this->uploaded_paths );
+		if ( ! $paths ) {
+			return;
 		}
+
+		$this->cron_initiator->add_paths_to_conversion( $paths );
+		$this->cron_initiator->init_async_conversion();
 	}
 }

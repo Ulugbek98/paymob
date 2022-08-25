@@ -6,17 +6,24 @@ use WebpConverter\Loader\HtaccessLoader;
 use WebpConverter\Loader\PassthruLoader;
 
 /**
- * Handles data about "Image loading mode" field in plugin settings.
+ * {@inheritdoc}
  */
 class LoaderTypeOption extends OptionAbstract {
 
-	const LOADER_TYPE = 'loader_type';
+	const OPTION_NAME = 'loader_type';
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_name(): string {
-		return self::LOADER_TYPE;
+		return self::OPTION_NAME;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_form_name(): string {
+		return OptionAbstract::FORM_TYPE_ADVANCED;
 	}
 
 	/**
@@ -42,8 +49,10 @@ class LoaderTypeOption extends OptionAbstract {
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @return string[]
 	 */
-	public function get_values( array $settings ): array {
+	public function get_available_values( array $settings ): array {
 		return [
 			HtaccessLoader::LOADER_TYPE => sprintf(
 			/* translators: %s: loader type */
@@ -56,6 +65,18 @@ class LoaderTypeOption extends OptionAbstract {
 				'Pass Thru'
 			),
 		];
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_valid_value( $current_value, array $available_values = null, array $disabled_values = null ) {
+		if ( ! array_key_exists( $current_value, $available_values ?: [] )
+			|| in_array( $current_value, $disabled_values ?: [] ) ) {
+			return null;
+		}
+
+		return $current_value;
 	}
 
 	/**

@@ -3,7 +3,7 @@
  * Loads images in WebP format or original images if browser does not support WebP.
  *
  * @category WordPress Plugin
- * @package  WebP Converter for Media
+ * @package  Converter for Media
  * @author   Mateusz Gbiorczyk
  * @link     https://wordpress.org/plugins/webp-converter-for-media/
  */
@@ -17,17 +17,40 @@ class PassthruLoader {
 	const PATH_UPLOADS_WEBP = '';
 	const MIME_TYPES        = '';
 
-	/**
-	 * PassthruLoader constructor.
-	 */
 	public function __construct() {
-		if ( ! ( $image_url = $_GET['src'] ?? null ) ) { // phpcs:ignore
+		if ( ( self::PATH_UPLOADS === '' ) || ( self::PATH_UPLOADS_WEBP === '' ) || ( self::MIME_TYPES === '' ) ) {
+			http_response_code( 404 );
+			exit;
+		}
+
+		$image_url = $_GET['src'] ?? null; // phpcs:ignore WordPress.Security
+		if ( ! $image_url || ! $this->validate_src_param( $image_url ) ) {
 			return;
-		} elseif ( ! filter_var( $image_url, FILTER_VALIDATE_URL ) ) {
-			$this->load_image_default( $image_url );
 		}
 
 		$this->load_converted_image( $image_url );
+	}
+
+	private function validate_src_param( string $image_url ): bool {
+		$url_path     = parse_url( $image_url, PHP_URL_PATH ) ?: '';
+		$encoded_path = array_map( 'urlencode', explode( '/', $url_path ) );
+		$encoded_url  = str_replace( $url_path, implode( '/', $encoded_path ), $image_url );
+
+		if ( filter_var( $encoded_url, FILTER_VALIDATE_URL ) === false ) {
+			return false;
+		}
+
+		$image_host = parse_url( $image_url, PHP_URL_HOST );
+		if ( $image_host !== ( $_SERVER['HTTP_HOST'] ?? '' ) ) { // phpcs:ignore WordPress.Security
+			return false;
+		}
+
+		$image_extension = strtolower( pathinfo( $image_url, PATHINFO_EXTENSION ) );
+		if ( ! in_array( $image_extension, [ 'jpg', 'jpeg', 'png', 'gif', 'png2' ] ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

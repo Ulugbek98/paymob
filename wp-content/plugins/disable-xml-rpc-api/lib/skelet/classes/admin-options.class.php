@@ -539,7 +539,7 @@ if ( ! class_exists( 'SKELET_Options' ) ) {
       do_action( 'skelet_options_before' );
 
       echo '<div class="skelet skelet-options'. esc_attr( $theme . $class . $wrapper_class ) .'" data-slug="'. esc_attr( $this->args['menu_slug'] ) .'" data-unique="'. esc_attr( $this->unique ) .'">';
-
+      do_action( 'skelet_options_inside' );
         echo '<div class="skelet-container">';
 
         echo '<form method="post" action="'. esc_attr( $form_action ) .'" enctype="multipart/form-data" id="skelet-form" autocomplete="off" novalidate="novalidate">';

@@ -1,19 +1,28 @@
 <?php
 /**
- * Widget displayed errors on plugin settings page.
+ * Widget displayed on plugin settings page.
  *
- * @var string[] $errors List of errors detected by plugin.
- * @package WebP Converter for Media
+ * @var string[][] $errors_messages Arrays with array of paragraphs.
+ * @var string[]   $errors_codes    List of server configuration errors.
+ *
+ * @package Converter for Media
  */
 
 ?>
-<?php if ( $errors ) : ?>
-	<div class="webpPage__widget">
-		<h3 class="webpPage__widgetTitle webpPage__widgetTitle--error">
+<?php if ( $errors_messages ) : ?>
+	<div class="webpcPage__widget">
+		<h3 class="webpcPage__widgetTitle webpcPage__widgetTitle--error">
 			<?php echo esc_html( __( 'Server configuration error', 'webp-converter-for-media' ) ); ?>
 		</h3>
-		<div class="webpContent webpContent--wide">
-			<?php echo wp_kses_post( implode( '<p>---</p>', $errors ) ); ?>
+		<div class="webpcContent webpcContent--wide">
+			<?php foreach ( $errors_messages as $error_index => $error_lines ) : ?>
+				<?php if ( $error_index > 0 ) : ?>
+					<p>---</p>
+				<?php endif; ?>
+				<?php foreach ( $error_lines as $error_line ) : ?>
+					<p><?php echo wp_kses_post( $error_line ); ?></p>
+				<?php endforeach; ?>
+			<?php endforeach; ?>
 			<p>---</p>
 			<p>
 				<?php
@@ -23,7 +32,7 @@
 						__( '%1$sError codes:%2$s %3$s', 'webp-converter-for-media' ),
 						'<strong>',
 						'</strong>',
-						implode( ', ', array_keys( $errors ) )
+						implode( ', ', $errors_codes )
 					)
 				);
 				?>

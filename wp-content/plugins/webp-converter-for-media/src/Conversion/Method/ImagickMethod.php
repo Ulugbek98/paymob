@@ -2,17 +2,23 @@
 
 namespace WebpConverter\Conversion\Method;
 
-use WebpConverter\Conversion\Exception;
-use WebpConverter\Conversion\Format\AvifFormat;
 use WebpConverter\Conversion\Format\WebpFormat;
+use WebpConverter\Exception;
+use WebpConverter\Settings\Option\ExtraFeaturesOption;
+use WebpConverter\Settings\Option\ImagesQualityOption;
+use WebpConverter\Settings\Option\SupportedExtensionsOption;
 
 /**
  * Supports image conversion method using Imagick library.
  */
-class ImagickMethod extends MethodAbstract {
+class ImagickMethod extends LibraryMethodAbstract {
 
-	const METHOD_NAME        = 'imagick';
-	const MAX_METHOD_QUALITY = 99.9;
+	const METHOD_NAME              = 'imagick';
+	const MAX_METHOD_QUALITY       = 99.9;
+	const PROTECTED_IMAGE_PROFILES = [
+		'icc',
+		'icm',
+	];
 
 	/**
 	 * {@inheritdoc}
@@ -25,8 +31,7 @@ class ImagickMethod extends MethodAbstract {
 	 * {@inheritdoc}
 	 */
 	public function get_label(): string {
-		/* translators: %s method name */
-		return sprintf( __( '%s (recommended)', 'webp-converter-for-media' ), 'Imagick' );
+		return 'Imagick';
 	}
 
 	/**
@@ -41,7 +46,7 @@ class ImagickMethod extends MethodAbstract {
 	 */
 	public static function is_method_active( string $format ): bool {
 		if ( ! self::is_method_installed()
-			|| ! ( $formats = ( new \Imagick() )->queryformats() )
+			|| ! ( $formats = ( new \Imagick() )->queryformats( 'WEBP' ) )
 			|| ! ( $extension = self::get_format_extension( $format ) ) ) {
 			return false;
 		}
@@ -59,8 +64,6 @@ class ImagickMethod extends MethodAbstract {
 		switch ( $format ) {
 			case WebpFormat::FORMAT_EXTENSION:
 				return 'WEBP';
-			case AvifFormat::FORMAT_EXTENSION:
-				return 'AVIF';
 			default:
 				return null;
 		}
@@ -73,18 +76,23 @@ class ImagickMethod extends MethodAbstract {
 	 * @throws Exception\ExtensionUnsupportedException
 	 * @throws Exception\ImagickUnavailableException
 	 * @throws Exception\ImageInvalidException
+	 * @throws Exception\ImageAnimatedException
 	 */
 	public function create_image_by_path( string $source_path, array $plugin_settings ) {
 		$extension = strtolower( pathinfo( $source_path, PATHINFO_EXTENSION ) );
 
 		if ( ! extension_loaded( 'imagick' ) || ! class_exists( 'Imagick' ) ) {
 			throw new Exception\ImagickUnavailableException();
-		} elseif ( ! in_array( $extension, $plugin_settings['extensions'] ) ) {
+		} elseif ( ! in_array( $extension, $plugin_settings[ SupportedExtensionsOption::OPTION_NAME ] ) ) {
 			throw new Exception\ExtensionUnsupportedException( [ $extension, $source_path ] );
 		}
 
 		try {
-			return new \Imagick( $source_path );
+			$imagick = new \Imagick( $source_path );
+			if ( ( $extension === 'gif' ) && ( $imagick->identifyFormat( '%n' ) > 1 ) ) {
+				throw new Exception\ImageAnimatedException( $source_path );
+			}
+			return $imagick;
 		} catch ( \ImagickException $e ) {
 			throw new Exception\ImageInvalidException( $source_path );
 		}
@@ -99,15 +107,20 @@ class ImagickMethod extends MethodAbstract {
 	public function convert_image_to_output( $image, string $source_path, string $output_path, string $format, array $plugin_settings ) {
 		$extension      = self::get_format_extension( $format );
 		$image          = apply_filters( 'webpc_imagick_before_saving', $image, $source_path );
-		$output_quality = min( $plugin_settings['quality'], self::MAX_METHOD_QUALITY );
+		$output_quality = min( $plugin_settings[ ImagesQualityOption::OPTION_NAME ], self::MAX_METHOD_QUALITY );
 
 		if ( ! in_array( $extension, $image->queryFormats() ) ) {
 			throw new Exception\ImagickNotSupportWebpException();
 		}
 
 		$image->setImageFormat( $extension );
-		if ( ! in_array( 'keep_metadata', $plugin_settings['features'] ) ) {
-			$image->stripImage();
+		if ( ! in_array( ExtraFeaturesOption::OPTION_VALUE_KEEP_METADATA, $plugin_settings[ ExtraFeaturesOption::OPTION_NAME ] ) ) {
+			$image_profiles = $image->getImageProfiles( '*', true );
+			foreach ( $image_profiles as $profile_name => $image_profile ) {
+				if ( ! in_array( $profile_name, self::PROTECTED_IMAGE_PROFILES ) ) {
+					$image->removeImageProfile( $profile_name );
+				}
+			}
 		}
 		$image->setImageCompressionQuality( $output_quality );
 		$blob = $image->getImageBlob();

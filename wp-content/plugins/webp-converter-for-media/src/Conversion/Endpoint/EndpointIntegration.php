@@ -9,7 +9,9 @@ use WebpConverter\HookableInterface;
  */
 class EndpointIntegration implements HookableInterface {
 
-	const ROUTE_NAMESPACE = 'webp-converter/v1';
+	const ROUTE_NAMESPACE    = 'webp-converter/v1';
+	const ROUTE_NONCE_PARAM  = 'nonce_token';
+	const ROUTE_NONCE_ACTION = 'webpc_rest-%s';
 
 	/**
 	 * Objects of supported REST API endpoints.
@@ -18,9 +20,6 @@ class EndpointIntegration implements HookableInterface {
 	 */
 	private $endpoint_object;
 
-	/**
-	 * @param EndpointInterface $endpoint_object .
-	 */
 	public function __construct( EndpointInterface $endpoint_object ) {
 		$this->endpoint_object = $endpoint_object;
 	}
@@ -41,16 +40,36 @@ class EndpointIntegration implements HookableInterface {
 	public function register_rest_route() {
 		register_rest_route(
 			self::ROUTE_NAMESPACE,
-			$this->endpoint_object->get_route_name(),
+			$this->endpoint_object->get_route_name() . '-(?P<nonce_token>[a-zA-Z0-9.]+)',
 			[
 				'methods'             => \WP_REST_Server::ALLMETHODS,
-				'permission_callback' => function () {
-					return ( wp_verify_nonce( $_REQUEST['_wpnonce'] ?? '', 'wp_rest' ) // phpcs:ignore
-						&& current_user_can( 'manage_options' ) );
+				'permission_callback' => function ( \WP_REST_Request $request ) {
+					return $this->endpoint_object->is_valid_request( $request );
 				},
-				'callback'            => [ $this->endpoint_object, 'get_route_response' ],
+				'callback'            => [ $this, 'get_route_response' ],
 				'args'                => $this->endpoint_object->get_route_args(),
 			]
 		);
+	}
+
+	/**
+	 * @param \WP_REST_Request $request .
+	 *
+	 * @return \WP_REST_Response|\WP_Error
+	 * @internal
+	 */
+	public function get_route_response( \WP_REST_Request $request ) {
+		if ( ! defined( 'WEBPC_DOING_CONVERSION' ) ) {
+			define( 'WEBPC_DOING_CONVERSION', true );
+		}
+
+		if ( ! defined( 'WP_ADMIN' ) ) {
+			/* Disable URLs replacement by Hide My WP (wpWave) plugin */
+			define( 'WP_ADMIN', true );
+		}
+		/* Disable URLs replacement by Hide My WP (WPPlugins) plugin */
+		add_filter( 'hmwp_start_buffer', '__return_false' );
+
+		return $this->endpoint_object->get_route_response( $request );
 	}
 }

@@ -2,14 +2,15 @@
 
 namespace WebpConverter\Conversion\Method;
 
-use WebpConverter\Conversion\Exception;
-use WebpConverter\Conversion\Format\AvifFormat;
 use WebpConverter\Conversion\Format\WebpFormat;
+use WebpConverter\Exception;
+use WebpConverter\Settings\Option\ImagesQualityOption;
+use WebpConverter\Settings\Option\SupportedExtensionsOption;
 
 /**
  * Supports image conversion method using GD library.
  */
-class GdMethod extends MethodAbstract {
+class GdMethod extends LibraryMethodAbstract {
 
 	const METHOD_NAME        = 'gd';
 	const MAX_METHOD_QUALITY = 99.9;
@@ -56,8 +57,6 @@ class GdMethod extends MethodAbstract {
 		switch ( $format ) {
 			case WebpFormat::FORMAT_EXTENSION:
 				return 'imagewebp';
-			case AvifFormat::FORMAT_EXTENSION:
-				return 'imageavif';
 			default:
 				return null;
 		}
@@ -70,6 +69,7 @@ class GdMethod extends MethodAbstract {
 	 * @throws Exception\ExtensionUnsupportedException
 	 * @throws Exception\FunctionUnavailableException
 	 * @throws Exception\ImageInvalidException
+	 * @throws Exception\ImageAnimatedException
 	 */
 	public function create_image_by_path( string $source_path, array $plugin_settings ) {
 		$extension = strtolower( pathinfo( $source_path, PATHINFO_EXTENSION ) );
@@ -82,8 +82,13 @@ class GdMethod extends MethodAbstract {
 			]
 		);
 
+		if ( ( $extension === 'gif' ) && $this->is_animated( $source_path ) ) {
+			throw new Exception\ImageAnimatedException( $source_path );
+		}
+
 		foreach ( $methods as $method => $extensions ) {
-			if ( ! in_array( $extension, $plugin_settings['extensions'] ) || ! in_array( $extension, $extensions ) ) {
+			if ( ! in_array( $extension, $plugin_settings[ SupportedExtensionsOption::OPTION_NAME ] )
+				|| ! in_array( $extension, $extensions ) ) {
 				continue;
 			} elseif ( ! function_exists( $method ) ) {
 				throw new Exception\FunctionUnavailableException( $method );
@@ -151,7 +156,7 @@ class GdMethod extends MethodAbstract {
 		}
 
 		$image          = apply_filters( 'webpc_gd_before_saving', $image, $source_path );
-		$output_quality = min( $plugin_settings['quality'], self::MAX_METHOD_QUALITY );
+		$output_quality = min( $plugin_settings[ ImagesQualityOption::OPTION_NAME ], self::MAX_METHOD_QUALITY );
 
 		if ( ! function_exists( $function ) ) {
 			throw new Exception\FunctionUnavailableException( $function );
@@ -164,5 +169,25 @@ class GdMethod extends MethodAbstract {
 		if ( filesize( $output_path ) % 2 === 1 ) {
 			file_put_contents( $output_path, "\0", FILE_APPEND );
 		}
+	}
+
+	/**
+	 * @param string $source_path .
+	 *
+	 * @link https://www.php.net/manual/en/function.imagecreatefromgif.php#104473
+	 */
+	private function is_animated( string $source_path ): bool {
+		if ( ! ( $fh = @fopen( $source_path, 'rb' ) ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			return false;
+		}
+
+		$count = 0;
+		while ( ! feof( $fh ) && ( $count < 2 ) ) {
+			$chunk = fread( $fh, 1024 * 100 );
+			$count = $count + preg_match_all( '#\x00\x21\xF9\x04.{4}\x00(\x2C|\x21)#s', $chunk ?: '', $matches );
+		}
+
+		fclose( $fh );
+		return ( $count > 1 );
 	}
 }
