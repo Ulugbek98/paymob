@@ -34,9 +34,17 @@ Customized Wordpress version made by OQILA Company for professional development.
         
         git remote set-url origin https://{remote url}.git
 
+Now login to admin panel: http://magnitbuilding.uz/boshqaruv
+
+        root_super
+        DJ!OcCJg*
+
 ## Updating:
 
 When you update Wordpress, it overwrites `index.php` file. You can copy its OQILA WP version from `./install/data/index.php`.
+
+## Deploying
+(soon)
 
 ## Apache configuration on Linux
 
