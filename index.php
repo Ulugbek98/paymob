@@ -14,24 +14,24 @@
 define( 'WP_USE_THEMES', true );
 
 /**
- * For developers: WordPress debugging mode.
- *
- * Change this to true to enable the display of notices during development.
- * It is strongly recommended that plugin and theme developers use WP_DEBUG
- * in their development environments.
- *
- * For information on other constants that can be used for debugging,
- * visit the documentation.
+ * OQILA WP debug mode switching.
  *
  * @link https://wordpress.org/support/article/debugging-in-wordpress/
  */
-define('WP_DEBUG', file_exists(__DIR__ . '/DEBUG'));
-
-if(WP_DEBUG)
+if(file_exists(__DIR__ . '/DEBUG'))
 {
     ini_set('display_errors', true);
     error_reporting(-1);
+
+    define('WP_DEBUG', true);
+
+    // Enable Debug logging to the /wp-content/debug.log file
+    define('WP_DEBUG_LOG', true);
+
+    // Enable display of errors and warnings
+    define('WP_DEBUG_DISPLAY', true);
 }
+/* End of OQILA WP debug mode switching */
 
 /** Loads the WordPress Environment and Template */
 require __DIR__ . '/wp-blog-header.php';

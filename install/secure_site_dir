@@ -14,6 +14,13 @@
 # without parameter parent dir of this file is taken as WP dir, otherwise WP dir
 # is taken from command line parameter.
 
+#-----------------------------------------------------
+if [ "$USER" == "root" ]
+then
+    echo -e "Error: Only root can not run this command.\n"
+    exit 1
+fi
+
 if [ $# -eq 0 ]
 then
     site_path=`realpath $0`;        # get absolute path of current file

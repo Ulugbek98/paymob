@@ -19,7 +19,7 @@ Customized Wordpress version made by OQILA Company for professional development.
         mv wordpress magnitbuilding.uz
 
 1. Create empty database for project via phpMyAdmin with `utf8mb4_general_ci` collation,
-1. Import `magnitbuilding.uz/install/db.sql` backup sql file into the newly created database,
+1. Import `magnitbuilding.uz/install/oqila_wp.sql` backup sql file into the newly created database,
 1. [Linux only] Set proper file permissions with prepared script
         
         ./magnitbuilding.uz/install/secure_site_dir
