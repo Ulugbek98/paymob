@@ -1,10 +1,10 @@
-# OQILA WP
+# Starfall WP
 
-Customized Wordpress version made by OQILA Company for professional development.
+Customized Wordpress version made by Starfall Company for professional development.
 
 **WARNING**: THIS SOFTWARE IS INTENDED ONLY FOR INTERNAL USE INSIDE THE COMPANY. DISTRIBUTION IS NOT PERMITTED.
 
-**Note**: Please read `@Dropbox/IB - Umumiy/sayt/dev book.pdf` for datailed information about all changes made to orginal Wordpress. There you can learn how to convert existing Wordpress to OQILA WP.
+**Note**: Please read `@Dropbox/IB - Umumiy/sayt/dev book.pdf` for datailed information about all changes made to orginal Wordpress. There you can learn how to convert existing Wordpress to Starfall WP.
 
 ## Installation:
 
@@ -12,14 +12,14 @@ Customized Wordpress version made by OQILA Company for professional development.
 
 1. Cloning requires that you must be added to repo:
 
-        git clone https://bitbucket.org/fazliddin2014/oqila-wp.git
+        git clone https://bitbucket.org/fazliddin2014/Starfall-wp.git
 
 1. Change `wordpress` folder name to your new project name, e.g. `magnitbuilding.uz`
         
         mv wordpress magnitbuilding.uz
 
 1. Create empty database for project via phpMyAdmin with `utf8mb4_general_ci` collation,
-1. Import `magnitbuilding.uz/install/oqila_wp.sql` backup sql file into the newly created database,
+1. Import `magnitbuilding.uz/install/Starfall_wp.sql` backup sql file into the newly created database,
 1. [Linux only] Set proper file permissions with prepared script
         
         ./magnitbuilding.uz/install/secure_site_dir
@@ -41,7 +41,7 @@ Now login to admin panel: http://magnitbuilding.uz/boshqaruv
 
 ## Updating:
 
-When you update Wordpress, it overwrites `index.php` file. You can copy its OQILA WP version from `./install/data/index.php`.
+When you update Wordpress, it overwrites `index.php` file. You can copy its Starfall WP version from `./install/data/index.php`.
 
 ## Deploying
 (soon)

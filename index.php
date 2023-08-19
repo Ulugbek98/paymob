@@ -14,7 +14,7 @@
 define( 'WP_USE_THEMES', true );
 
 /**
- * OQILA WP debug mode switching.
+ * Starfall WP debug mode switching.
  *
  * @link https://wordpress.org/support/article/debugging-in-wordpress/
  */
@@ -31,7 +31,7 @@ if(file_exists(__DIR__ . '/DEBUG'))
     // Enable display of errors and warnings
     define('WP_DEBUG_DISPLAY', true);
 }
-/* End of OQILA WP debug mode switching */
+/* End of Starfall WP debug mode switching */
 
 /** Loads the WordPress Environment and Template */
 require __DIR__ . '/wp-blog-header.php';
