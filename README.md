@@ -34,10 +34,9 @@ Customized Wordpress version made by Starfall Company for professional developme
         
         git remote set-url origin https://{remote url}.git
 
-Now login to admin panel: http://magnitbuilding.uz/boshqaruv
+Now login to admin panel
 
-        root_super
-        DJ!OcCJg*
+
 
 ## Updating:
 
