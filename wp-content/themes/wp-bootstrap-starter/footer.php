@@ -56,7 +56,7 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<p>
-										<button type="submit" onclick="message();" class="pelum-btn">Отправить сообщение <span></span></button>
+										<button type="submit" id="datas-btn" class="pelum-btn">Отправить сообщение <span></span></button>
 									</p>
 								</div>
 							</div>
@@ -85,8 +85,10 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<p>
-										<button type="submit" onclick="message();" class="pelum-btn">Habarni jonatish <span></span></button>
+										<button type="submit" id="datas-btn" class="pelum-btn">Habarni jonatish <span></span></button>
 									</p>
+									<div class="g-recaptcha" data-sitekey="6LfgAx0oAAAAAFmUaHdL8Bqdp0g5_FwxOf3QBjqJ" id="CAptcha"></div>
+									<p class="form-message-result"></p>
 								</div>
 							</div>
 						</form>
@@ -102,7 +104,7 @@
 							</div>
 							<div class="contact-info-text">
 								<h3>Адрес</h3>
-								<p><?= get_field('address-ru',49); ?></p>
+								<p><?= get_field('address-ru', 49); ?></p>
 							</div>
 						</div>
 						<div class="single-contact-info wow fadeInUp" data-wow-duration="2s" data-wow-delay="0.5s">
@@ -111,7 +113,7 @@
 							</div>
 							<div class="contact-info-text">
 								<h3>Сервисный центр</h3>
-								<p><?= get_field('primary-phone-number',49); ?></p>
+								<p><?= get_field('primary-phone-number', 49); ?></p>
 							</div>
 						</div>
 						<div class="single-contact-info wow fadeInUp" data-wow-duration="2s" data-wow-delay="0.7s">
@@ -120,7 +122,7 @@
 							</div>
 							<div class="contact-info-text">
 								<h3>Почта</h3>
-								<p><?= get_field('email',49); ?></p>
+								<p><?= get_field('email', 49); ?></p>
 							</div>
 						</div>
 					<?php } else { ?>
@@ -130,7 +132,7 @@
 							</div>
 							<div class="contact-info-text">
 								<h3>Manzil</h3>
-								<p><?= get_field('address-uz',49); ?></p>
+								<p><?= get_field('address-uz', 49); ?></p>
 							</div>
 						</div>
 						<div class="single-contact-info wow fadeInUp" data-wow-duration="2s" data-wow-delay="0.5s">
@@ -139,7 +141,7 @@
 							</div>
 							<div class="contact-info-text">
 								<h3>Xizmat markazi</h3>
-								<p><?= get_field('primary-phone-number',49); ?></p>
+								<p><?= get_field('primary-phone-number', 49); ?></p>
 							</div>
 						</div>
 						<div class="single-contact-info wow fadeInUp" data-wow-duration="2s" data-wow-delay="0.7s">
@@ -148,7 +150,7 @@
 							</div>
 							<div class="contact-info-text">
 								<h3>Pochta</h3>
-								<p><?= get_field('email',49); ?></p>
+								<p><?= get_field('email', 49); ?></p>
 							</div>
 						</div>
 					<?php } ?>
@@ -201,10 +203,11 @@
 </footer>
 <!-- Footer Area End -->
 
-
+<?php wp_footer(); ?>
 
 <!-- //// SCRIPTS //// -->
 <script src="<?= get_template_directory_uri() ?>/assets/js/jquery.min.js"></script>
+<script src="<?= get_template_directory_uri() ?>/assets/js/ajax-contact.js"></script>
 <script src="<?= get_template_directory_uri() ?>/assets/js/popper.min.js"></script>
 <script src="<?= get_template_directory_uri() ?>/assets/js/bootstrap.min.js"></script>
 <script src="<?= get_template_directory_uri() ?>/assets/js/scrollIt.min.js"></script>
@@ -216,37 +219,44 @@
 
 <script>
 	function message() {
-		let name = document.getElementById("form-name").value;
-		let phone = document.getElementById("form-phone").value;
-		let message = document.getElementById("form-message").value;
-		var url = window.location.href;
-		var re = /^[0-9-+\s()]*$/;
-		var answers = [];
-		answers.push('Имя - ' + name);
-		answers.push('Номер телефона - ' + phone);
-		answers.push('Сообщение - ' + message);
-		answers = answers.join('\n');
-		console.log(answers);
-		$.ajax({
-			url: 'https://api.telegram.org/bot5930981968:AAG2wCcJlajXdBsL3KRsylHGQ5bvim-pXF4/sendMessage',
-			method: 'POST',
-			data: {
-				chat_id: -1001977697422,
-				text: answers,
-			},
-			success: function() {
-				console.log(answers + "Sent");
-				answers = [];
-			},
-			failure: function(errMsg) {
-				console.log(errMsg);
 
+			let name = document.getElementById("form-name").value;
+			let phone = document.getElementById("form-phone").value;
+			let message = document.getElementById("form-message").value;
+			var url = window.location.href;
+			var re = /^[0-9-+\s()]*$/;
+			var answers = [];
+			if (phone != '' && re.exec(phone)) {
+				if (name != '') {
+					answers.push('Имя - ' + name);
+					answers.push('Номер телефона - ' + phone);
+					answers.push('Сообщение - ' + message);
+					answers = answers.join('\n');
+					$.ajax({
+						url: 'https://api.telegram.org/bot6539688285:AAHmoERxHuNiZ7TS-lLpMc_HC5sop0NZasA/sendMessage',
+						method: 'POST',
+						data: {
+							chat_id: -1001977697422,
+							text: answers,
+							message: phone
+
+						},
+						success: function() {
+							console.log(answers + "Sent");
+							answers = [];
+						},
+						failure: function(errMsg) {
+							console.log(answers + errMsg);
+						}
+					});
+				} else {
+					document.getElementById("form-phone").placeholder = "Sizning raqamingiz (majburiy)";
+				}
 			}
-		});
-	}
-</script>
 
-<?php wp_footer(); ?>
+		}
+	
+</script>
 </body>
 
 </html>

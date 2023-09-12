@@ -52,7 +52,6 @@
 
 <body>
 
-
     <!-- Preloader Start -->
     <div class="preloader">
         <div class="loader">
@@ -61,7 +60,6 @@
         </div>
     </div>
     <!-- Preloader End -->
-
 
     <!--Navbar Start-->
     <nav class="navbar navbar-expand-lg">
