@@ -54,9 +54,15 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-12">
+								<div class="col-lg-6">
 									<p>
-										<button type="submit" id="datas-btn" class="pelum-btn">Отправить сообщение <span></span></button>
+										<button type="submit" onclick="message()" class="pelum-btn">Отправить сообщение <span></span></button>
+									</p>
+								</div>
+								<div class="col-lg-6">
+									<p>
+									<div class="g-recaptcha" data-sitekey="6LfgAx0oAAAAAFmUaHdL8Bqdp0g5_FwxOf3QBjqJ" id="CAptcha"></div>
+									<p class="form-message-result" id="result_succes" style="color:#4777f4;font-weight:800;"></p>
 									</p>
 								</div>
 							</div>
@@ -83,12 +89,17 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-12">
+								<div class="col-lg-6">
 									<p>
-										<button type="submit" id="datas-btn" class="pelum-btn">Habarni jonatish <span></span></button>
+										<button type="submit" onclick="message()" class="pelum-btn">Habarni jonatish <span></span></button>
 									</p>
+								</div>
+
+								<div class="col-lg-6">
+									<p>
 									<div class="g-recaptcha" data-sitekey="6LfgAx0oAAAAAFmUaHdL8Bqdp0g5_FwxOf3QBjqJ" id="CAptcha"></div>
-									<p class="form-message-result"></p>
+									<p class="form-message-result" id="result_succes" style="color:#4777f4;font-weight:800;"></p>
+									</p>
 								</div>
 							</div>
 						</form>
@@ -219,7 +230,19 @@
 
 <script>
 	function message() {
+		var isCaptchaValidated = false;
+		var response = grecaptcha.getResponse();
+		if (response.length == 0) {
+			isCaptchaValidated = false;
+			console.log('Please verify that you are a Human.');
+		} else {
+			isCaptchaValidated = true;
+		}
 
+
+		if (isCaptchaValidated) {
+			//you can now submit your form
+			const userLanguage = document.documentElement.lang
 			let name = document.getElementById("form-name").value;
 			let phone = document.getElementById("form-phone").value;
 			let message = document.getElementById("form-message").value;
@@ -242,20 +265,51 @@
 
 						},
 						success: function() {
-							console.log(answers + "Sent");
+							if (userLanguage == 'ru-RU') {
+								document.getElementById("result_succes").innerHTML = "Ваша Заявка принята";
+							} else {
+								document.getElementById("result_succes").innerHTML = "Murojatingiz qabul qilindi";
+							}
+							grecaptcha.reset();
 							answers = [];
 						},
-						failure: function(errMsg) {
-							console.log(answers + errMsg);
+						failure: function() {
+							console.log(answers + "not sent");
 						}
 					});
 				} else {
-					document.getElementById("form-phone").placeholder = "Sizning raqamingiz (majburiy)";
+					document.getElementById("result_succes").innerHTML ="Sizning ismingiz (majburiy)";
+					grecaptcha.reset();
+
+				}
+			} else {
+				if (userLanguage == 'ru-RU') {
+					document.getElementById("result_succes").innerHTML = "Введен неверный номер";
+				} else {
+					document.getElementById("result_succes").innerHTML = "Sizning raqamingiz noto'g'ri";
+				}
+				grecaptcha.reset();
+
+			}
+		}
+	}
+
+	var onReturnCallback = function(response) {
+		var url = 'proxy.php?url=' + 'https://www.google.com/recaptcha/api/siteverify';
+		$.ajax({
+			'url': url,
+			dataType: 'json',
+			data: {
+				response: response
+			},
+			success: function(result) {
+				var res = result.success.toString();
+				if (res == 'true') {
+					document.getElementById('g-recaptcha').innerHTML = 'Вы прошли идентификацию';
 				}
 			}
-
-		}
-	
+		});
+	};
 </script>
 </body>
 
