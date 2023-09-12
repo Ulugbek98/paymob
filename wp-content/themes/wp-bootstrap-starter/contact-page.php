@@ -23,7 +23,6 @@ get_header(); ?>
                 <div class="welcome-text">
                     <h2><?= get_field('zagolovok_bannera', $post_id); ?></h2>
                     <p><?= get_field('podzagolovok_bannera', $post_id); ?></p>
-                    <a href="#" class="pelum-btn" data-scroll-nav="2"><?= get_field('knopka_na_bannere_text', $post_id); ?><span></span></a>
                 </div>
             </div>
             <div class="col-12 col-md-5">

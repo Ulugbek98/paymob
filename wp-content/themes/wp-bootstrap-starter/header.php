@@ -67,10 +67,10 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <!-- LOGO -->
-            <a class="navbar-brand logo" href="index.html.htm">
+            <a class="navbar-brand logo" href="<?php echo get_home_url(); ?>">
                 <img src="<?= get_field('logo',57); ?>" alt="pelum">
             </a>
-            <a class="navbar-brand logo HideScroll" href="index.html.htm">
+            <a class="navbar-brand logo HideScroll" href="<?php echo get_home_url(); ?>">
                 <img src="<?= get_field('logo',57); ?>" alt="pelum">
             </a>
             <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">

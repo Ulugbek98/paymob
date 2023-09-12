@@ -171,6 +171,7 @@
 	}
 	#navbarCollapse {
 		background: #fff none repeat scroll 0 0;
+		border-radius: 10px;
 	}
     .pelum-about-area{
         background: transparent
@@ -189,7 +190,8 @@
 		transform: translate(25%, -30%) rotate(-28deg)
 	}
 	nav.navbar .nav-item {
-		padding: 0 !important
+		padding: 0px !important;
+		border-bottom:0.2px dashed #afafaf
 	}
 	nav.navbar .nav-item .nav-link {
 		color: #111;

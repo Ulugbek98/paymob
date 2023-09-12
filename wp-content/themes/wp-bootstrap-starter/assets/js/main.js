@@ -187,26 +187,33 @@ JS INDEX
 }(jQuery));
 document.addEventListener("DOMContentLoaded", function () {
 	const userLanguage = document.documentElement.lang
-	console.log(userLanguage);
 	const showMoreButton = document.querySelector(".show-more-button");
-	const additionalContent = document.querySelector(".additional-content");
+	if (showMoreButton) {
+		console.log(showMoreButton)
+		const additionalContent = document.querySelector(".additional-content");
 
-	showMoreButton.addEventListener("click", function () {
-		additionalContent.classList.toggle("visible");
-		if (userLanguage == 'ru-RU') {
-			if (additionalContent.classList.contains("visible")) {
-				showMoreButton.textContent = "Скрыть";
-			} else {
-				showMoreButton.textContent = "Подробнее";
+		showMoreButton.addEventListener("click", function () {
+			additionalContent.classList.toggle("visible");
+			if (userLanguage == 'ru-RU') {
+				if (additionalContent.classList.contains("visible")) {
+					showMoreButton.textContent = "Скрыть";
+				} else {
+					showMoreButton.textContent = "Подробнее";
+				}
 			}
-		}
-		else{
-			if (additionalContent.classList.contains("visible")) {
-				showMoreButton.textContent = "Yashirish";
-			} else {
-				showMoreButton.textContent = "Batafsil";
+			else {
+				if (additionalContent.classList.contains("visible")) {
+					showMoreButton.textContent = "Yashirish";
+				} else {
+					showMoreButton.textContent = "Batafsil";
+				}
 			}
-		}
-	});
+		});
+	}
+	else {
+		console.log("no btn page")
+		return false
+	}
+
 });
 
